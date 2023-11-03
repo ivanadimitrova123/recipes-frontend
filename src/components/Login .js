@@ -18,7 +18,7 @@ const Login = () => {
             if (response.status === 200) {
                 localStorage.setItem('jwtToken', response.data.token);
                 console.log('Login successful', response.data);
-                navigate(`/userProfile`);
+                navigate(`/feed`);
             }
         } catch (error) {
             console.error('Login error', error);

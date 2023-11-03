@@ -37,7 +37,7 @@ function FollowingList() {
     };
 
     return (
-        <div>
+        <div className="container mt-5">
             <h2>Following Users</h2>
             {loading ? (
                 <p>Loading...</p>
@@ -45,16 +45,8 @@ function FollowingList() {
                 <ul>
                     {followingUsers.map((user) => (
                         <li key={user.id}>
-                            {/*{user.picture.filename && (
-                                <img
-                                    src={user.picture.filename}
-                                    alt={`${user.username}'s profile picture`}
-                                    width="100"
-                                    height="100"
-                                />
-                            )}*/}
                             <h3>{user.username}</h3>
-                            <button onClick={() => handleUnfollow(user.id)}>Unfollow</button>
+                            <button className="btn btn-danger" onClick={() => handleUnfollow(user.id)}>Unfollow</button>
                         </li>
                     ))}
                 </ul>
