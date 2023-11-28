@@ -16,6 +16,7 @@ function UserProfile() {
         };
 
         if (id) {
+            // TEST123
             // Fetch the user profile by ID if 'id' parameter exists
             fetch(`/api/account/user/${id}`, { headers })
                 .then((response) => {
