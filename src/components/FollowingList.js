@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from './Navbar';
 
 function FollowingList() {
     const [followingUsers, setFollowingUsers] = useState([]);
@@ -11,7 +12,7 @@ function FollowingList() {
             Authorization: `Bearer ${token}`,
         };
         try {
-            const response = await axios.get('/api/follow/following',{headers});
+            const response = await axios.get('/api/follow/following', { headers });
             setFollowingUsers(response.data);
             setLoading(false);
         } catch (error) {
@@ -29,7 +30,7 @@ function FollowingList() {
             Authorization: `Bearer ${token}`,
         };
         try {
-            const response = await axios.delete(`/api/follow/${followedUserId}`,{headers});
+            const response = await axios.delete(`/api/follow/${followedUserId}`, { headers });
             fetchFollowingUsers();
         } catch (error) {
             console.error('Error unfollowing user:', error);
@@ -37,7 +38,8 @@ function FollowingList() {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="container-fluid">
+            <Navbar />
             <h2>Following Users</h2>
             {loading ? (
                 <p>Loading...</p>

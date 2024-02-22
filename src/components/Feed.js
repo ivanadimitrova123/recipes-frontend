@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
+import Navbar from './Navbar';
 
 const Feed = () => {
     const [recipes, setRecipes] = useState([]);
@@ -48,7 +49,8 @@ const Feed = () => {
     }, []);
 
     return (
-        <div className="container mt-5">
+        <div className="container-fluid">
+             <Navbar />
             <div className="row mb-3">
                 <div className="col" style={{ display: "flex", alignItems: "center" }}>
                     <h2 className="me-5">Recipes Feed</h2>
@@ -63,7 +65,7 @@ const Feed = () => {
                         }}
                     />
                 </div>
-                {currentUser && (
+                {/* {currentUser && (
                 <div className="col">
                     <Link to={'/userProfile'} className="text-decoration-none d-flex justify-content-end me-5">
                         <img src={currentUser.userImage} alt="profile"
@@ -75,7 +77,7 @@ const Feed = () => {
                         <h4>{currentUser.username}</h4>
                     </Link>
                 </div>
-                )}
+                )} */}
             </div>
 
 

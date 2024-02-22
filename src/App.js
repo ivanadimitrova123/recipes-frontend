@@ -9,7 +9,10 @@ import UserProfile from "./components/UserProfile";
 import Feed from "./components/Feed";
 import FollowingList from "./components/FollowingList";
 import AddProfilePicture from "./components/AddProfilePicture";
+import ForgotPassword from "./components/ForgotPassword";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './App.css';
 
 
 function App() {
@@ -28,6 +31,7 @@ function App() {
                     <Route path="/feed" element={<Feed />} />
                     <Route path="/followingList" element={<FollowingList />} />
                     <Route path="/addProfilePicture" element={<AddProfilePicture/>}/>
+                    <Route path="/forgotPassword" element={<ForgotPassword/>}/>
                 </Routes>
             </div>
         </Router>

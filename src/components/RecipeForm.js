@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-
+import Navbar from './Navbar';
 
 function RecipeForm() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState(null);
+    const [users, setUsers] = useState([]);
     const [recipe, setRecipe] = useState({
         name: '',
         description: '',
@@ -107,44 +109,94 @@ function RecipeForm() {
         }
     };
 
+
     return (
-        <div className="container">
-            <h1 className="mt-4">{id ? 'Edit Recipe' : 'Create Recipe'}</h1>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="name">Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        className="form-control"
-                        value={recipe.name}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="description">Description:</label>
-                    <input
-                        type="text"
-                        name="description"
-                        className="form-control"
-                        value={recipe.description}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="ingredients">Ingredients:</label>
-                    <textarea
-                        name="ingredients"
-                        className="form-control"
-                        value={recipe.ingredients.join('\n')}
-                        onChange={handleIngredientChange}
-                    />
-                </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="photo">Photo:</label>
+        <div className="container-fluid">
+            <Navbar />
+            <div className="form-group recipeHeader">
+                <div className='recipePhotoCover'>
+                    {/* <label htmlFor="photo">Photo:</label> */}
                     <input type="file" accept="image/*" onChange={handleFileChange} />
+
                 </div>
-                <button className="btn btn-primary mt-3" onClick={handleCreateOrUpdateRecipe}>
+                {/* {currentUser && (
+                    <div>
+                        <img src={currentUser.userImage} alt="profile"/>
+                        <h4>{currentUser.username}</h4>
+                    </div>
+                )} */}
+            </div>
+            <div className="form-group">
+                {/* <label htmlFor="name">Title Recipe:</label> */}
+                <input
+                    type="text"
+                    name="name"
+                    className="form-control mt-3 recipeTitle"
+                    placeholder='Enter title of recepie'
+                    value={recipe.name}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <h3 className="mt-4">{id ? 'Edit Recipe' : 'Create Recipe'}</h3>
+            <form className='recipeDetailsForm'>
+                <div className='row'>
+                    <div className='col-sm'>
+                        <div className='form-group selectorGroup'>
+                            <label htmlFor='form-select'>Level: </label>
+                            <select class="form-select" name='form-select' aria-label="Default select example">
+                                <option selected>Choose...</option>
+                                <option value="1">Easy</option>
+                                <option value="2">Medium</option>
+                                <option value="3">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className='col-sm'>
+                        <div className='form-group selectorGroup'>
+                            <label>Prep: </label>
+                            <input type='number'></input>
+                            min
+                        </div>
+                    </div>
+                    <div className='col-sm'>
+                        <div className='form-group selectorGroup'>
+                            <label>Cook: </label>
+                            <input type='number'></input>
+                            min
+                        </div>
+                    </div>
+                </div>
+                <div className='row mt-5'>
+                    <div className='col-sm'>
+                        <div className='form-group selectorGroup'>
+                            <label>Total: </label>
+                            <input type='number' disabled></input>
+                            min
+                        </div>
+                    </div>
+                </div>
+                <div className='ingredientAndDesc'>
+                    <div className="form-group">
+                        <label htmlFor="description">Description:</label>
+                         <textarea
+                               name="description"
+                            className="form-control"
+                            value={recipe.description}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="ingredients">Ingredients:</label>
+                        <textarea
+                            name="ingredients"
+                            className="form-control"
+                            value={recipe.ingredients.join('\n')}
+                            onChange={handleIngredientChange}
+                        />
+                    </div>
+                </div>
+
+                <button className="btn btn-danger mt-5" onClick={handleCreateOrUpdateRecipe}>
                     {id ? 'Update Recipe' : 'Create Recipe'}
                 </button>
             </form>
