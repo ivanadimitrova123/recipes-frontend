@@ -24,6 +24,16 @@
   color: white;
 }
 
+#basic-nav-dropdown {
+  margin: 0px;
+  padding: 0px;
+  margin-right: 50px;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -64,13 +74,13 @@ nav {
 }
 
 .buttonSide button {
-  background-color: #F23D3D !important;
+  background-color: #f23d3d !important;
   transition: 0.3s ease-in-out;
   padding: 5px 30px 5px 30px;
 }
 
 .modal-footer button {
-  background-color: #F23D3D !important;
+  background-color: #f23d3d !important;
   transition: 0.3s ease-in-out;
   padding: 5px 30px 5px 30px;
 }
@@ -109,7 +119,7 @@ nav {
 
 .modal-header button svg {
   width: 21px;
-  height: 27px
+  height: 27px;
 }
 
 .buttonSide button:hover {
@@ -128,8 +138,8 @@ nav {
 }
 
 .btn-primary {
-  --bs-btn-border-color: #F23D3D !important;
-  --bs-btn-hover-border-color: #F23D3D !important;
+  --bs-btn-border-color: #f23d3d !important;
+  --bs-btn-hover-border-color: #f23d3d !important;
 }
 
 .registerForm {
@@ -147,7 +157,7 @@ nav {
 }
 
 .loginForm form div input {
-  border: 1px solid #A4A4A4 !important;
+  border: 1px solid #a4a4a4 !important;
 }
 
 .loginForm p a {
@@ -161,7 +171,7 @@ nav {
 }
 
 .registerForm form div input {
-  border: 1px solid #A4A4A4 !important;
+  border: 1px solid #a4a4a4 !important;
 }
 
 .modal {
@@ -183,7 +193,7 @@ nav {
 }
 
 .leftPartProfile a {
-  color: #3D3D3D;
+  color: #3d3d3d;
   font-style: italic;
   font-size: 15px !important;
   font-weight: 400;
@@ -249,7 +259,7 @@ nav {
 }
 
 .unfollowBtn {
-  background: #F00 !important;
+  background: #f00 !important;
   color: white;
   padding: 3px 30px 3px 30px;
 }
@@ -279,10 +289,8 @@ nav {
 }
 
 .filled {
-  color: #F23D3D;
-  ;
+  color: #f23d3d;
 }
-
 
 .currentLogged a {
   display: inline-flex;
@@ -310,7 +318,7 @@ ul.navbar-nav {
   border: 1px solid rgba(255, 0, 0, 0.407);
   border-radius: 5px;
   padding-left: 5px;
-  padding-bottom: 3px
+  padding-bottom: 3px;
 }
 
 .searchNav:focus {
@@ -338,14 +346,14 @@ ul.navbar-nav {
     height: 40px;
   }
 
-  .ingredientAndDesc{
+  .ingredientAndDesc {
     flex-wrap: wrap;
   }
 }
 
 .recipeHeader {
   width: 100%;
-  background: #B57878;
+  background: #b57878;
   height: 40vh;
   text-align: center;
 }
@@ -357,12 +365,12 @@ ul.navbar-nav {
 input.recipeTitle {
   width: 40%;
   margin: 0 auto;
-  background: #D9D9D9 !important;
+  background: #d9d9d9 !important;
   height: 45px;
 }
 
 input.recipeTitle:focus {
-  background: #D9D9D9 !important;
+  background: #d9d9d9 !important;
   outline: none;
 }
 
@@ -377,17 +385,17 @@ input.recipeTitle:focus {
   gap: 20px;
 }
 
-.ingredientAndDesc{
+.ingredientAndDesc {
   display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    flex-direction: row;
-    gap: 20px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  gap: 20px;
 }
 
-.ingredientAndDesc .form-group{
+.ingredientAndDesc .form-group {
   width: 50%;
 }
 
@@ -395,7 +403,7 @@ input.recipeTitle:focus {
   border: 1px solid rgba(255, 0, 0, 0.566);
 }
 
-form.recipeDetailsForm{
+form.recipeDetailsForm {
   text-align: center;
   padding-bottom: 100px;
 }
