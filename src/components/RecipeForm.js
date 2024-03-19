@@ -13,6 +13,11 @@ function RecipeForm() {
     name: "",
     description: "",
     ingredients: "",
+    level: "easy",
+    prep: "",
+    cook: "",
+    total: "",
+    yield: "",
   });
 
   const [photo, setPhoto] = useState(null);
@@ -31,8 +36,6 @@ function RecipeForm() {
           },
         })
         .then((response) => {
-          console.log("HERE");
-          console.log(response.data);
           const fetchedRecipe = response.data.recipe;
           /*    setRecipe({
             name: fetchedRecipe.name,
@@ -74,13 +77,21 @@ function RecipeForm() {
 
   const handleCreateOrUpdateRecipe = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("name", recipe.name);
     formData.append("description", recipe.description);
+    formData.append("ingredients", [recipe.ingredients]);
+    formData.append("level", recipe.level);
+    formData.append("cook", recipe.cook);
+    formData.append("prep", recipe.prep);
+    formData.append("total", recipe.total);
+    formData.append("yield", recipe.yield);
     //formData.append('ingredients', recipe.ingredients.join('\n'));
-    recipe.ingredients.forEach((ingredient) => {
+    /*  recipe.ingredients.forEach((ingredient) => {
       formData.append("ingredients", ingredient);
-    });
+    }); */
+
     formData.append("photo", photo);
 
     const token = localStorage.getItem("jwtToken");
@@ -88,6 +99,7 @@ function RecipeForm() {
     try {
       if (id) {
         //edit action
+
         const response = await axios.put(`/api/recipes/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -161,25 +173,41 @@ function RecipeForm() {
                 className="form-select"
                 name="form-select"
                 aria-label="Default select example"
+                value={recipe.level}
+                onChange={(e) => {
+                  setRecipe({
+                    ...recipe,
+                    level: e.target.value,
+                  });
+                }}
               >
-                <option selected>Choose...</option>
-                <option value="1">Easy</option>
-                <option value="2">Medium</option>
-                <option value="3">Hard</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
               </select>
             </div>
           </div>
           <div className="col-sm">
             <div className="form-group selectorGroup">
               <label>Prep: </label>
-              <input type="number"></input>
+              <input
+                type="number"
+                name="prep"
+                value={recipe.prep}
+                onChange={handleInputChange}
+              ></input>
               min
             </div>
           </div>
           <div className="col-sm">
             <div className="form-group selectorGroup">
               <label>Cook: </label>
-              <input type="number"></input>
+              <input
+                type="number"
+                name="cook"
+                value={recipe.cook}
+                onChange={handleInputChange}
+              ></input>
               min
             </div>
           </div>
@@ -188,8 +216,24 @@ function RecipeForm() {
           <div className="col-sm">
             <div className="form-group selectorGroup">
               <label>Total: </label>
-              <input type="number" disabled></input>
+              <input
+                type="number"
+                name="total"
+                value={recipe.total}
+                onChange={handleInputChange}
+              ></input>
               min
+            </div>
+          </div>
+          <div className="col-sm">
+            <div className="form-group selectorGroup">
+              <label>Yield: </label>
+              <input
+                type="text"
+                name="yield"
+                value={recipe.yield}
+                onChange={handleInputChange}
+              ></input>
             </div>
           </div>
         </div>
@@ -209,7 +253,8 @@ function RecipeForm() {
               name="ingredients"
               className="form-control"
               value={recipe.ingredients}
-              onChange={handleIngredientChange}
+              //onChange={handleIngredientChange}
+              onChange={handleInputChange}
             />
           </div>
         </div>
