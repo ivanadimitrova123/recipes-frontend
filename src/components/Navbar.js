@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Navbar = () => {
   /*   const [recipes, setRecipes] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+ 
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const filteredUsers = users.filter(
@@ -17,12 +17,12 @@ const Navbar = () => {
       user.id !== currentUser.id &&
       user.username.toLowerCase().startsWith(searchTerm.toLowerCase())
   ); */
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  var user = JSON.parse(localStorage.getItem("user"));
   const baseUrl = window.location.origin;
-
-  /*   useEffect(() => {
-    if (user) {
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
       const token = localStorage.getItem("jwtToken");
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -32,12 +32,11 @@ const Navbar = () => {
         .get("/api/account/current", { headers })
         .then((response) => {
           setCurrentUser(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.error("Error fetching current user:", error);
         });
-
+      /*
       axios
         .get("/api/follow/recipes", { headers })
         .then((response) => {
@@ -55,9 +54,9 @@ const Navbar = () => {
         })
         .catch((error) => {
           console.error("Error fetching users:", error);
-        });
+        });*/
     }
-  }, [user]); */
+  }, []);
 
   const signoutHandler = () => {
     localStorage.removeItem("user");
@@ -118,8 +117,8 @@ const Navbar = () => {
                       title={
                         <img
                           src={
-                            user.profilePictureId
-                              ? `${user.profilePicture}`
+                            currentUser && currentUser.profilePictureId != null
+                              ? `${currentUser.userImage}`
                               : `${baseUrl}/default.jpg`
                           }
                           alt="profile"

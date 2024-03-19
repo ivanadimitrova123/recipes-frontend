@@ -20,16 +20,15 @@ function UserProfile() {
     };
 
     const checkFollowStatus = async () => {
+      console.log(headers);
       try {
-        const response = await fetch(`/api/follow/status/${id}`, { headers });
+        const response = await axios.get(`/api/follow/status/${id}`, {
+          headers,
+        });
 
-        if (response.ok) {
-          const data = await response.json();
-          setIsFollowing(data.isFollowing);
-        } else {
-          console.error("Error checking follow status:", response.statusText);
-        }
+        setIsFollowing(response.data);
       } catch (error) {
+        console.log("here");
         console.error("Network error:", error);
       }
     };
@@ -50,8 +49,7 @@ function UserProfile() {
           console.error("Error fetching user data:", error);
         });
     } else {
-      setIsCurrentUser(true);
-      /* fetch("/api/account/current", { headers })
+      fetch("/api/account/current", { headers })
         .then((response) => {
           if (!response.ok) {
             throw Error("Network response was not ok");
@@ -60,11 +58,11 @@ function UserProfile() {
         })
         .then((data) => {
           setUser(data);
-          
+          setIsCurrentUser(true);
         })
         .catch((error) => {
           console.error("Error fetching current user data:", error);
-        }); */
+        });
     }
   }, [id]);
 
@@ -115,8 +113,6 @@ function UserProfile() {
     }
   };
 
-  console.log(user);
-
   return (
     <div className="container-fluid mb-3">
       <Navbar />
@@ -137,7 +133,9 @@ function UserProfile() {
               ) : (
                 <img
                   src={
-                    currentUser.profilePictureId ? "" : `${baseUrl}/default.jpg`
+                    user.profilePictureId
+                      ? user.userImage
+                      : `${baseUrl}/default.jpg`
                   }
                   alt="Profile"
                   className="img-fluid"
