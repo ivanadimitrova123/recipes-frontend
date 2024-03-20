@@ -105,7 +105,24 @@ const RecipeDetails = () => {
       });
   };
 
-  const saveRecipe = () => {};
+  const saveRecipe = () => {
+    const token = localStorage.getItem("jwtToken");
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    };
+
+    const formData = new FormData();
+    formData.append("userId", currentUser.id);
+    formData.append("recipeId", recipe.id);
+
+    axios
+      .post(`/api/saverecipe`, formData, { headers })
+      .then(() => {})
+      .catch((error) => {
+        console.error("Error Grading recipe:", error);
+      });
+  };
 
   return (
     <div className="container-fluid">
