@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import { Button } from "react-bootstrap";
 
 const RecipeDetails = () => {
   const { id } = useParams();
@@ -10,6 +11,9 @@ const RecipeDetails = () => {
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
   const [recipeUserImage, setRecipeUserImage] = useState("");
+  const [recipeGrade, setRecipeGrade] = useState("");
+  const [reviews, setReviews] = useState("");
+  const [rerender, setRerender] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -38,6 +42,27 @@ const RecipeDetails = () => {
       });
   }, [id]);
 
+  useEffect(() => {
+    if (currentUser && currentUser.id !== recipe.user.id) {
+      const token = localStorage.getItem("jwtToken");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      axios
+        .get(`/api/usergrades?userId=${currentUser.id}&recipeId=${recipe.id}`, {
+          headers,
+        })
+        .then((response) => {
+          setRecipeGrade(response.data.grade);
+          setReviews(response.data.reviews);
+        })
+        .catch((error) => {
+          console.error("Error fetching current user:", error);
+        });
+    }
+  });
+
   const handleEdit = () => {
     navigate(`/recipeForm/${id}`);
   };
@@ -57,6 +82,30 @@ const RecipeDetails = () => {
         console.error("Error deleting recipe:", error);
       });
   };
+
+  const gradeRecipe = (grade) => {
+    const token = localStorage.getItem("jwtToken");
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    };
+
+    const formData = new FormData();
+    formData.append("userId", currentUser.id);
+    formData.append("recipeId", recipe.id);
+    formData.append("grade", grade);
+
+    axios
+      .post(`/api/usergrades`, formData, { headers })
+      .then(() => {
+        setRerender(!rerender);
+      })
+      .catch((error) => {
+        console.error("Error Grading recipe:", error);
+      });
+  };
+
+  const saveRecipe = () => {};
 
   return (
     <div className="container-fluid">
@@ -103,6 +152,18 @@ const RecipeDetails = () => {
           </div>
           <div className="mt-4">
             <h3>Name: {recipe.name}</h3>
+            {Array.from({ length: 5 }, (_, index) => (
+              <span
+                key={index}
+                className={`star ${index < recipe.rating ? "filled" : ""}`}
+              >
+                &#9733;
+              </span>
+            ))}
+            {`Reviews: ${reviews}`}
+            <Button variant="danger" className="ms-5" onClick={saveRecipe}>
+              Save recipe
+            </Button>
           </div>
           <div className="mt-4">
             <p>Description: {recipe.description}</p>
@@ -116,6 +177,22 @@ const RecipeDetails = () => {
               ))}
             </ul>
           </div>
+          {currentUser && currentUser.id !== recipe.user.id && (
+            <div>
+              <h5>Your rating:</h5>
+              {Array.from({ length: 5 }, (_, index) => (
+                <span
+                  key={index}
+                  onClick={() => gradeRecipe(index + 1)}
+                  style={{ cursor: "pointer" }}
+                  className={`star ${index < recipeGrade ? "filled" : ""}`}
+                >
+                  &#9733;
+                </span>
+              ))}
+            </div>
+          )}
+
           {/* Add other sections (directions) here */}
           {currentUser && currentUser.id === recipe.user.id && (
             <div className="mt-4">
