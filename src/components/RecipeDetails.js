@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { Button } from "react-bootstrap";
+import { render } from "@testing-library/react";
 
 const RecipeDetails = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const RecipeDetails = () => {
   const [recipeGrade, setRecipeGrade] = useState("");
   const [reviews, setReviews] = useState("");
   const [rerender, setRerender] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -61,7 +64,22 @@ const RecipeDetails = () => {
           console.error("Error fetching current user:", error);
         });
     }
-  });
+  }, [currentUser, recipe]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    if (recipe && recipe.id != null) {
+      axios
+        .get(`/api/comments/${recipe.id}`, { headers })
+        .then((response) => setComments(response.data))
+        .catch((error) => {
+          console.error("Error fetching current user:", error);
+        });
+    }
+  }, [recipe]);
 
   const handleEdit = () => {
     navigate(`/recipeForm/${id}`);
@@ -119,6 +137,29 @@ const RecipeDetails = () => {
     axios
       .post(`/api/saverecipe`, formData, { headers })
       .then(() => {})
+      .catch((error) => {
+        console.error("Error Grading recipe:", error);
+      });
+  };
+
+  const addCommentHandler = (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("jwtToken");
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    };
+
+    const formData = new FormData();
+    formData.append("UserId", currentUser.id);
+    formData.append("RecipeId", recipe.id);
+    formData.append("Content", commentText);
+
+    axios
+      .post(`/api/comments`, formData, { headers })
+      .then(() => {
+        setRerender(!render);
+      })
       .catch((error) => {
         console.error("Error Grading recipe:", error);
       });
@@ -209,6 +250,25 @@ const RecipeDetails = () => {
               ))}
             </div>
           )}
+
+          <div>
+            <h3>Comment</h3>
+            <form onSubmit={addCommentHandler}>
+              <input
+                type="text"
+                name="comment"
+                onChange={(e) => setCommentText(e.target.value)}
+              />
+              <Button type="submit">Post Comment</Button>
+            </form>
+          </div>
+          <div>
+            <h2>Comments</h2>
+            {comments &&
+              comments.map((c) => (
+                <div style={{ border: "1px solid black" }}>{c.content}</div>
+              ))}
+          </div>
 
           {/* Add other sections (directions) here */}
           {currentUser && currentUser.id === recipe.user.id && (
