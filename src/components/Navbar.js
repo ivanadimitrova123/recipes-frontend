@@ -21,6 +21,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const baseUrl = window.location.origin;
   const [currentUser, setCurrentUser] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [foundUsers, setFoundUsers] = useState([]);
+  const [foundRecipes, setFoundRecipes] = useState([]);
   useEffect(() => {
     if (localStorage.getItem("user")) {
       const token = localStorage.getItem("jwtToken");
@@ -58,6 +61,33 @@ const Navbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (searchText.length > 0) {
+      const token = localStorage.getItem("jwtToken");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      axios
+        .get(`/api/account/search?text=${searchText}`, { headers })
+        .then((response) => {
+          setFoundUsers(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching searched users:", error);
+        });
+
+      axios
+        .get(`/api/recipes/search?text=${searchText}`, { headers })
+        .then((response) => {
+          setFoundRecipes(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching searched recipes:", error);
+        });
+    }
+  }, [searchText]);
+
   const signoutHandler = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("jwtToken");
@@ -88,6 +118,8 @@ const Navbar = () => {
                 <input
                   className="searchNav"
                   type="search"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
                   placeholder="Search..."
                 ></input>
                 <li className="nav-item">
@@ -143,6 +175,14 @@ const Navbar = () => {
             </div>
           </>
         )}
+      </div>
+      <div>
+        {searchText.length > 0 &&
+          foundUsers &&
+          foundUsers.map((u) => <h3 key={u.id}>{u.username}</h3>)}
+        {searchText.length > 0 &&
+          foundRecipes &&
+          foundRecipes.map((r) => <h3 key={r.id}>{r.name}</h3>)}
       </div>
     </nav>
   );
