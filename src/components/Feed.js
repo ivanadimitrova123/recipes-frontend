@@ -54,11 +54,11 @@ const Feed = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid customBg">
       <Navbar />
       <div className="row mb-3">
         <div className="col" style={{ display: "flex", alignItems: "center" }}>
-          <h2 className="me-5">Recipes Feed</h2>
+          <h2 className="mainHeader" style={{width: '100%', textAlign: 'center'}}>Recipes Feed</h2>
         </div>
       </div>
 
@@ -88,46 +88,61 @@ const Feed = () => {
         </div>
       )}
 
-      {recipes.length > 0 ? (
-        <ul className="list-group">
-          {recipes.map((recipe) => (
-            <li key={recipe.recipe.id} className="list-group-item">
-              <Link
-                to={`/userProfile/${recipe.recipe.user.id}`}
-                className="text-decoration-none"
+{recipes.length > 0 ? (
+  <div className="row row-cols-1 row-cols-md-3 m-2 feedRow">
+    {recipes.map((recipe) => (
+      <div
+        key={recipe.recipe.id}
+        className="col mb-4 card d-flex flex-column justify-content-between"
+        style={{ position: 'relative' }}
+      >
+        <Link to={`/userProfile/${recipe.recipe.user.id}`} className="text-decoration-none">
+          <div className="previewRecipe">
+            <img
+              src={recipe.userImage}
+              alt="Profile"
+              className="img-fluid rounded-circle"
+              style={{ maxWidth: "50px", maxHeight: "50px" }}
+            />
+            <h3 style={{ display: "inline" }}>{recipe.recipe.user.username}</h3>
+          </div>
+        </Link>
+        <Link to={`/recipeDetails/${recipe.recipe.id}`} className="text-decoration-none">
+          <div style={{ overflow: "hidden", height: "300px" }}>
+            <img
+              src={recipe.recipeImage}
+              alt="food"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "cover",
+                height: "300px",
+                width: "100%",
+              }}
+            />
+          </div>
+        </Link>
+        <h5 className="mt-2">Recipe Name: {recipe.recipe.name}</h5>
+        <div className="recipeRating">
+          {Array.from({ length: 5 }, (_, index) => (
+            <div key={index}>
+              <span
+                className={`star ${index < recipe.rating ? "filled" : ""}`}
               >
-                <img
-                  className=""
-                  src={recipe.userImage}
-                  alt={"profilepicture"}
-                  style={{
-                    maxWidth: "70px",
-                    maxHeight: "60px",
-                  }}
-                />
-                <h3 style={{ display: "inline" }}>
-                  {recipe.recipe.user.username}
-                </h3>
-              </Link>
-
-              <Link
-                to={`/recipeDetails/${recipe.recipe.id}`}
-                className="text-decoration-none"
-              >
-                <h4>Recipe Name: {recipe.recipe.name}</h4>
-                <img
-                  src={recipe.recipeImage}
-                  alt={recipe.name}
-                  className="img-fluid"
-                  style={{ maxWidth: "250px", maxHeight: "250px" }}
-                />
-              </Link>
-            </li>
+                ★
+              </span>
+            </div>
           ))}
-        </ul>
-      ) : (
-        <p>No recipes from followed users.</p>
-      )}
+          <div className="comments-section">
+            <p>0</p> {/* You can replace this with the actual number of comments */}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <p>No recipes from followed users.</p>
+)}
     </div>
   );
 };

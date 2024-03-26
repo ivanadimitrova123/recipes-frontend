@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { Button } from "react-bootstrap";
 import { render } from "@testing-library/react";
+import Favorites from "../images/favorites.svg";
+const baseUrl = window.location.origin;
 
 const RecipeDetails = () => {
   const { id } = useParams();
@@ -136,7 +138,7 @@ const RecipeDetails = () => {
 
     axios
       .post(`/api/saverecipe`, formData, { headers })
-      .then(() => {})
+      .then(() => { })
       .catch((error) => {
         console.error("Error Grading recipe:", error);
       });
@@ -179,7 +181,7 @@ const RecipeDetails = () => {
               )})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              minHeight: "300px", // Adjust the height as needed
+              minHeight: "400px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-end",
@@ -187,14 +189,7 @@ const RecipeDetails = () => {
               position: "relative",
             }}
           >
-            <div
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.8)", // Adjust the opacity as needed
-                padding: "20px",
-                borderRadius: "10px",
-                textAlign: "center",
-              }}
-            >
+            <div className="imgDetails">
               <img
                 src={recipeUserImage} // Replace with the path to the user's profile image
                 alt={recipe.user.username}
@@ -208,35 +203,61 @@ const RecipeDetails = () => {
               <p>Recipe by {recipe.user.username}</p>
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 infoDetails">
             <h3>Name: {recipe.name}</h3>
-            {Array.from({ length: 5 }, (_, index) => (
-              <span
-                key={index}
-                className={`star ${index < recipe.rating ? "filled" : ""}`}
-              >
-                &#9733;
-              </span>
-            ))}
-            {`Reviews: ${reviews}`}
-            <Button variant="danger" className="ms-5" onClick={saveRecipe}>
+            <div className="reviewsDetails">
+              <div className="starsDetails">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <span
+                    key={index}
+                    className={`star ${index < recipe.rating ? "filled" : ""}`}
+                  >
+                    &#9733;
+                  </span>
+                ))}
+              </div>
+              {`Reviews: ${reviews}`}
+            </div>
+            {/* <Button variant="danger" onClick={saveRecipe}>
               Save recipe
-            </Button>
+            </Button> */}
           </div>
-          <div className="mt-4">
-            <p>Description: {recipe.description}</p>
+
+
+          <div className="numberedTiming mt-4">
+            <div className="firstTime">
+              <p>Level: <span>{recipe.level}</span></p>
+              <p>Prep: <span>{recipe.prep}</span></p>
+              <p>Yield: <span>{recipe.yield}</span></p>
+            </div>
+
+            <div className="secondTime">
+              <p>Total: <span>{recipe.total}</span></p>
+              <p>Cook: <span>{recipe.cook}</span></p>
+              <p>Rating: <span>{parseFloat(recipe.rating).toFixed(2)}</span></p>
+            </div>
           </div>
-          {/* Add other sections (ratings, level, prep, yield, total, cook) here */}
-          <div className="mt-4">
-            <h3>Ingredients:</h3>
-            <ul>
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
+
+          <div className="mt-4 descriptionForRecipe">
+
+            <div className="flexItems">
+              <div className="ingredients">
+                <h5>Ingredients:</h5>
+                <ul>
+                  {recipe.ingredients.map((ingredient, index) => (
+                    <li key={index}>{ingredient}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="directions">
+                <h5>Directions</h5>
+                <p>{recipe.description}</p>
+              </div>
+            </div>
           </div>
           {currentUser && currentUser.id !== recipe.user.id && (
-            <div>
+            <div className="yourRating">
               <h5>Your rating:</h5>
               {Array.from({ length: 5 }, (_, index) => (
                 <span
@@ -248,32 +269,41 @@ const RecipeDetails = () => {
                   &#9733;
                 </span>
               ))}
+              <Button className="buttonFav" onClick={saveRecipe}> <img src={Favorites} /> Save recipe</Button>
             </div>
           )}
-
-          <div>
-            <h3>Comment</h3>
+          <h3>Comment</h3>
+          <div className="commentForm">
+            <img
+              src={
+                currentUser && currentUser.profilePictureId != null
+                  ? `${currentUser.userImage}`
+                  : `${baseUrl}/default.jpg`
+              }
+              alt="profile"/>
             <form onSubmit={addCommentHandler}>
               <input
                 type="text"
+                placeholder="Did you make this recipe? Leave a review!"
                 name="comment"
-                onChange={(e) => setCommentText(e.target.value)}
-              />
-              <Button type="submit">Post Comment</Button>
+                onChange={(e) => setCommentText(e.target.value)}/>
+              <Button type="submit">Post review</Button>
             </form>
           </div>
-          <div>
-            <h2>Comments</h2>
+
+          <h2>Comments</h2>
+          <div className="commentsSection">
+           
             {comments &&
               comments.map((c) => (
-                <div style={{ border: "1px solid black" }}>{c.content}</div>
+                <div>{c.content}</div>
               ))}
           </div>
 
           {/* Add other sections (directions) here */}
           {currentUser && currentUser.id === recipe.user.id && (
             <div className="mt-4">
-              <button className="btn btn-primary me-2" onClick={handleEdit}>
+              <button className="btn btn-danger me-2" onClick={handleEdit}>
                 Edit
               </button>
               <button className="btn btn-danger" onClick={handleDelete}>

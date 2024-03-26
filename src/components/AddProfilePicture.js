@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Navbar from "./Navbar";
 
 function ImageUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
+
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
@@ -33,7 +36,7 @@ function ImageUpload() {
       } else {
         const data = await response.json();
         alert(`Upload failed: ${data}`);
-        console.log(data)
+        console.log(data);
       }
     } catch (error) {
       alert("An error occurred while uploading the image.");
@@ -41,14 +44,44 @@ function ImageUpload() {
     }
   };
 
+  const handleConfirm = () => {
+    setShowConfirmation(false);
+    handleUpload();
+  };
+
+  const handleCancel = () => {
+    setSelectedFile(null);
+    setShowConfirmation(false);
+  };
+
   return (
-      <div className="container mt-4">
-        <h2>Image Upload</h2>
-        <div className="form-group">
-          <input type="file" accept="image/*" className="form-control-file" onChange={handleFileChange} />
+    <div className="container-fluid customBackground addProfilePicture">
+      <Navbar />
+      <div className="imageChangeContainer">
+        <div className="changeImageBox">
+          <h2>Image Upload</h2>
+          <div className="form-group">
+            <input type="file" accept="image/*" className="form-control-file" onChange={handleFileChange} />
+          </div>
         </div>
-        <button onClick={handleUpload} className="btn btn-primary mt-3">Upload</button>
+        {selectedFile && (
+          <div className="changedImage">
+            <img src={URL.createObjectURL(selectedFile)} alt="Selected" style={{ maxWidth: "100%", maxHeight: "300px" }} />
+            <div>
+              {showConfirmation ? (
+                <div className="changeImgButtons">
+                  <p>Are you sure you want to upload this image?</p>
+                  <button onClick={handleConfirm} className="btn btn-primary mr-2">Save and Proceed</button>
+                  <button onClick={handleCancel} className="btn btn-secondary">Pick Another</button>
+                </div>
+              ) : (
+                <button onClick={() => setShowConfirmation(true)} className="btn btn-primary mt-3">Upload</button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+    </div>
   );
 }
 

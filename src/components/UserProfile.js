@@ -114,7 +114,7 @@ function UserProfile() {
   };
 
   return (
-    <div className="container-fluid mb-3">
+    <div className="container-fluid mb-3 customBackground">
       <Navbar />
       <div className="container pt-5 userProfileContainer">
         <div className="row">
@@ -138,11 +138,7 @@ function UserProfile() {
                       : `${baseUrl}/default.jpg`
                   }
                   alt="Profile"
-                  className="img-fluid"
-                  style={{
-                    maxWidth: "150px",
-                    maxHeight: "130px",
-                  }}
+                  className="img-fluid rounded-circle"
                 />
               )}
 
@@ -192,7 +188,7 @@ function UserProfile() {
                 </p>
                 {isCurrentUser && (
                   <div className="theBtns">
-                    <Link to="/recipeForm" className="btn btn-primary ">
+                    <Link to="/recipeForm" className="btn btn-danger">
                       <b>Add Recipe</b>
                     </Link>
                     <button
@@ -222,7 +218,7 @@ function UserProfile() {
                 </p>
                 {isCurrentUser && (
                   <div className="theBtns">
-                    <Link to="/recipeForm" className="btn btn-primary ">
+                    <Link to="/recipeForm" className="btn btn-danger">
                       <b>Add Recipe</b>
                     </Link>
                     <button
@@ -239,54 +235,63 @@ function UserProfile() {
         </div>
       </div>
 
-      <div className="container">
+      <div className="container mt-4 cardGroup">
+        <h2 className="text-start"><b>Posts</b></h2>
         {user.recipes && user.recipes.length > 0 && (
           <div className="row mt-4">
             {user.recipes.map((recipe) => (
               <div
                 key={recipe.id}
-                className="col-md-4 mb-2 card  justify-content-center"
+                className="col-md-5 mb-2 card d-flex flex-column justify-content-between"
+                style={{ height: "100%", position: 'relative' }}
               >
                 <Link to={`/recipeDetails/${recipe.id}`}>
                   <div className="previewRecipe">
                     <img
                       src={user.userImage}
                       alt="Profile"
-                      className="img-fluid"
-                      style={{
-                        maxWidth: "50px",
-                        maxHeight: "50px",
-                      }}
+                      className="img-fluid rounded-circle"
                     />
                     <p>{user.username}</p>
                   </div>
-                  <img
-                    src={recipe.recipeImage}
-                    alt="food"
-                    style={{
-                      maxWidth: "300px",
-                      maxHeight: "300px",
-                    }}
-                  />
-                  <p>{recipe.name}</p>
+                  <div style={{ overflow: "hidden", height: "300px" }}>
+                    <img
+                      src={recipe.recipeImage}
+                      alt="food"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "cover",
+                        height: "300px",
+                        width: "100%",
+                      }}
+                    />
+                  </div>
+                  <p className="recipeName">{recipe.name}</p>
                 </Link>
                 <div className="recipeRating">
                   {Array.from({ length: 5 }, (_, index) => (
-                    <span
+                    <div>
+                        <span
                       key={index}
-                      className={`star ${
-                        index < recipe.rating ? "filled" : ""
-                      }`}
+                      className={`star ${index < recipe.rating ? "filled" : ""}`}
                     >
-                      &#9733;
+                      ★
                     </span>
+                    </div>
                   ))}
+
+                  <div className="comments-section">
+                    <p>0</p>
+                  </div>
                 </div>
+
               </div>
             ))}
           </div>
         )}
       </div>
+
     </div>
   );
 }

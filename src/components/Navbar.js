@@ -115,13 +115,28 @@ const Navbar = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
-                <input
-                  className="searchNav"
-                  type="search"
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  placeholder="Search..."
-                ></input>
+                <div className="position-relative">
+                  <input
+                    className="searchNav form-control"
+                    type="search"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="Search..."
+                  />
+                  {searchText.length > 0 && (
+                    <div className="dropdown-menu show searchItemsList">
+                      {/* Render found users */}
+                      {foundUsers.map((user) => (
+                        <a className="dropdown-item" href={`/userProfile/${user.id}`} key={user.id}>{user.username}</a>
+                       
+                      ))}
+                      {/* Render found recipes */}
+                      {foundRecipes.map((recipe) => (
+                        <a className="dropdown-item" href={`/recipeDetails/${recipe.id}`} key={recipe.id}>{recipe.name}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <li className="nav-item">
                   <Link to="/recipeForm" className="nav-link">
                     Recipe Form
@@ -175,14 +190,6 @@ const Navbar = () => {
             </div>
           </>
         )}
-      </div>
-      <div>
-        {searchText.length > 0 &&
-          foundUsers &&
-          foundUsers.map((u) => <h3 key={u.id}>{u.username}</h3>)}
-        {searchText.length > 0 &&
-          foundRecipes &&
-          foundRecipes.map((r) => <h3 key={r.id}>{r.name}</h3>)}
       </div>
     </nav>
   );
