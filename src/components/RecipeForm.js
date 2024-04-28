@@ -129,143 +129,144 @@ function RecipeForm() {
   return (
     <div className="container-fluid">
       <Navbar />
-      <div className="form-group recipeHeader">
-        <div
-          className="recipePhotoCover"
-          style={{
-            height: "100%",
-            backgroundImage: `url(${
-              (recipe.picture && recipe.picture.fileName) || ""
-            })`,
-            backgroundSize: "cover", // Optional: Adjust the background size as per your requirement
-            backgroundPosition: "center", // Optional: Adjust the background position as per your requirement
-            // You can add more CSS properties here as needed
-          }}
-        >
-          {/* <label htmlFor="photo">Photo:</label> */}
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-        </div>
-        {/* {currentUser && (
+      <div className="container">
+        <div className="form-group recipeHeader">
+          <div
+            className="recipePhotoCover"
+            style={{
+              height: "100%",
+              backgroundImage: `url(${(recipe.picture && recipe.picture.fileName) || ""
+                })`,
+              backgroundSize: "cover", // Optional: Adjust the background size as per your requirement
+              backgroundPosition: "center", // Optional: Adjust the background position as per your requirement
+              // You can add more CSS properties here as needed
+            }}
+          >
+            {/* <label htmlFor="photo">Photo:</label> */}
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+          </div>
+          {/* {currentUser && (
                     <div>
                         <img src={currentUser.userImage} alt="profile"/>
                         <h4>{currentUser.username}</h4>
                     </div>
                 )} */}
-      </div>
-      <div className="form-group">
-        {/* <label htmlFor="name">Title Recipe:</label> */}
-        <input
-          type="text"
-          name="name"
-          className="form-control mt-3 recipeTitle"
-          placeholder="Enter title of recepie"
-          value={recipe.name}
-          onChange={handleInputChange}
-        />
-      </div>
-      <h3 className="mt-4">{id ? "Edit Recipe" : "Create Recipe"}</h3>
-      <form className="recipeDetailsForm">
-        <div className="row">
-          <div className="col-sm">
-            <div className="form-group selectorGroup">
-              <label htmlFor="form-select">Level: </label>
-              <select
-                className="form-select"
-                name="form-select"
-                aria-label="Default select example"
-                value={recipe.level}
-                onChange={(e) => {
-                  setRecipe({
-                    ...recipe,
-                    level: e.target.value,
-                  });
-                }}
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
-            </div>
-          </div>
-          <div className="col-sm">
-            <div className="form-group selectorGroup">
-              <label>Prep: </label>
-              <input
-                type="number"
-                name="prep"
-                value={recipe.prep}
-                onChange={handleInputChange}
-              ></input>
-              min
-            </div>
-          </div>
-          <div className="col-sm">
-            <div className="form-group selectorGroup">
-              <label>Cook: </label>
-              <input
-                type="number"
-                name="cook"
-                value={recipe.cook}
-                onChange={handleInputChange}
-              ></input>
-              min
-            </div>
-          </div>
         </div>
-        <div className="row mt-5">
-          <div className="col-sm">
-            <div className="form-group selectorGroup">
-              <label>Total: </label>
-              <input
-                type="number"
-                name="total"
-                value={recipe.total}
-                onChange={handleInputChange}
-              ></input>
-              min
+        <div className="form-group">
+          {/* <label htmlFor="name">Title Recipe:</label> */}
+          <input
+            type="text"
+            name="name"
+            className="form-control mt-3 recipeTitle"
+            placeholder="Enter title of recepie"
+            value={recipe.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <h3 className="mt-4">{id ? "Edit Recipe" : "Create Recipe"}</h3>
+        <form className="recipeDetailsForm">
+          <div className="row">
+            <div className="col-sm">
+              <div className="form-group selectorGroup">
+                <label htmlFor="form-select">Level: </label>
+                <select
+                  className="form-select"
+                  name="form-select"
+                  aria-label="Default select example"
+                  value={recipe.level}
+                  onChange={(e) => {
+                    setRecipe({
+                      ...recipe,
+                      level: e.target.value,
+                    });
+                  }}
+                >
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+            <div className="col-sm">
+              <div className="form-group selectorGroup">
+                <label>Prep: </label>
+                <input
+                  type="number"
+                  name="prep"
+                  value={recipe.prep}
+                  onChange={handleInputChange}
+                ></input>
+                min
+              </div>
+            </div>
+            <div className="col-sm">
+              <div className="form-group selectorGroup">
+                <label>Cook: </label>
+                <input
+                  type="number"
+                  name="cook"
+                  value={recipe.cook}
+                  onChange={handleInputChange}
+                ></input>
+                min
+              </div>
             </div>
           </div>
-          <div className="col-sm">
-            <div className="form-group selectorGroup">
-              <label>Yield: </label>
-              <input
-                type="text"
-                name="yield"
-                value={recipe.yield}
-                onChange={handleInputChange}
-              ></input>
+          <div className="row mt-5">
+            <div className="col-sm">
+              <div className="form-group selectorGroup">
+                <label>Total: </label>
+                <input
+                  type="number"
+                  name="total"
+                  value={recipe.total}
+                  onChange={handleInputChange}
+                ></input>
+                min
+              </div>
+            </div>
+            <div className="col-sm">
+              <div className="form-group selectorGroup">
+                <label>Yield: </label>
+                <input
+                  type="text"
+                  name="yield"
+                  value={recipe.yield}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="ingredientAndDesc">
-          <div className="form-group">
-            <label htmlFor="description">Description:</label>
-            <textarea
-              name="description"
-              className="form-control"
-              value={recipe.description}
-              onChange={handleInputChange}
-            />
+          <div className="ingredientAndDesc">
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <textarea
+                name="description"
+                className="form-control"
+                value={recipe.description}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="ingredients">Ingredients:</label>
+              <textarea
+                name="ingredients"
+                className="form-control"
+                value={recipe.ingredients}
+                //onChange={handleIngredientChange}
+                onChange={handleInputChange}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="ingredients">Ingredients:</label>
-            <textarea
-              name="ingredients"
-              className="form-control"
-              value={recipe.ingredients}
-              //onChange={handleIngredientChange}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
 
-        <button
-          className="btn btn-danger mt-5"
-          onClick={handleCreateOrUpdateRecipe}
-        >
-          {id ? "Update Recipe" : "Create Recipe"}
-        </button>
-      </form>
+          <button
+            className="btn btn-danger mt-5"
+            onClick={handleCreateOrUpdateRecipe}
+          >
+            {id ? "Update Recipe" : "Create Recipe"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

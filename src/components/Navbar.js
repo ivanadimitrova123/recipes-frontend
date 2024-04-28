@@ -142,17 +142,17 @@ const Navbar = () => {
                     Recipe Form
                   </Link>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to="/recipeDetails/1" className="nav-link">
                     Recipe Details
                   </Link>
-                </li>
+                </li> */} 
                 <li className="nav-item">
                   <Link to="/followingList" className="nav-link">
                     Following List
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item mr-2">
                   <Link to="/feed" className="nav-link">
                     Feed
                   </Link>

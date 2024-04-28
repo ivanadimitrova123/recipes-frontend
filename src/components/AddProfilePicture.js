@@ -71,7 +71,7 @@ function ImageUpload() {
               {showConfirmation ? (
                 <div className="changeImgButtons">
                   <p>Are you sure you want to upload this image?</p>
-                  <button onClick={handleConfirm} className="btn btn-primary mr-2">Save and Proceed</button>
+                  <button onClick={handleConfirm} className="btn btn-primary">Save and Proceed</button>
                   <button onClick={handleCancel} className="btn btn-secondary">Pick Another</button>
                 </div>
               ) : (

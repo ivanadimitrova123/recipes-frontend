@@ -22,7 +22,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid loginPageBg">
             <Navbar />
             <div className='container loginForm'>
                 <h2 className="mt-4 mb-4 text-center"><b>Forgot Password</b></h2>

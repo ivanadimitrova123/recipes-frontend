@@ -114,7 +114,7 @@ function UserProfile() {
   };
 
   return (
-    <div className="container-fluid mb-3 customBackground">
+    <div className="container-fluid customBackground">
       <Navbar />
       <div className="container pt-5 userProfileContainer">
         <div className="row">
@@ -237,8 +237,14 @@ function UserProfile() {
 
       <div className="container mt-4 cardGroup">
         <h2 className="text-start"><b>Posts</b></h2>
+        {user.recipes && user.recipes.length <= 0 && (
+          <h4 className="noPostText">Make your first <span><Link to="/recipeForm">post!</Link></span></h4>
+        )};
+          
+        
+
         {user.recipes && user.recipes.length > 0 && (
-          <div className="row mt-4">
+          <div className="row mt-4 paddingBottom">
             {user.recipes.map((recipe) => (
               <div
                 key={recipe.id}

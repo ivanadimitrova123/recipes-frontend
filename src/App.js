@@ -19,7 +19,7 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <Router>
-      <div>
+      <div className="heightMore">
         <Routes>
           <Route path="/recipeForm" element={<RecipeForm />} />
           <Route path="/recipeDetails/:id" element={<RecipeDetails />} />

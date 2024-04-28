@@ -52,7 +52,7 @@ const Login = () => {
   });
 
   return (
-    <div className="container-fluid ">
+    <div className="container-fluid loginPageBg">
       <Navbar />
       <div className="container loginForm">
         <h3 className="text-center pb-2">

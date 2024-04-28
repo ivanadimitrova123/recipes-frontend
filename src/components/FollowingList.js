@@ -47,7 +47,9 @@ function FollowingList() {
                 <ul>
                     {followingUsers.map((user) => (
                         <li key={user.id}>
+                            <img src={(user.profilePictureId)} alt={user.username} />
                             <h3>{user.username}</h3>
+
                             <button className="btn btn-danger" onClick={() => handleUnfollow(user.id)}>Unfollow</button>
                         </li>
                     ))}
