@@ -127,7 +127,7 @@ nav {
 }
 
 .modal-title img {
-  height: 50px;
+  height: 35px;
 }
 
 @media (min-width: 768px) {
@@ -135,6 +135,21 @@ nav {
     flex: 0 0 auto;
     width: 30% !important;
   }
+}
+
+.followingList li{
+  width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-content: center;
+    flex-wrap: nowrap;
+    gap: 50px;
+}
+
+.comment-form button:hover{
+  background-color: rgb(255, 64, 64) !important;
+  transition: 0.4s ease-in-out all;
 }
 
 .imgDetails {

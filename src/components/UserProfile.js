@@ -114,7 +114,8 @@ function UserProfile() {
   };
 
   return (
-    <div className="container-fluid customBackground">
+   <div className="heightMore">
+     <div className="container-fluid customBackground">
       <Navbar />
       <div className="container pt-5 userProfileContainer">
         <div className="row">
@@ -299,6 +300,7 @@ function UserProfile() {
       </div>
 
     </div>
+   </div>
   );
 }
 

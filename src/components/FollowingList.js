@@ -44,7 +44,7 @@ function FollowingList() {
             {loading ? (
                 <p>Loading...</p>
             ) : followingUsers.length > 0 ? (
-                <ul>
+                <ul className='followingList'>
                     {followingUsers.map((user) => (
                         <li key={user.id}>
                             <img src={(user.profilePictureId)} alt={user.username} />

@@ -303,6 +303,7 @@ const RecipeDetails = () => {
                 <div className="actionShareBtn">
                   <a className="shareBtn"><img src={print}></img></a>
                   <a className="shareBtn"><img src={share}></img></a>
+                  <Button className="button-fav" onClick={saveRecipe}> <img src={Favorites} /> Save recipe</Button>
                 </div>
               </div>
               {/* <div className="reviews-details">
@@ -436,7 +437,7 @@ const RecipeDetails = () => {
                     &#9733;
                   </span>
                 ))}
-                <Button className="button-fav" onClick={saveRecipe}> <img src={Favorites} /> Save recipe</Button>
+             
               </div>
             )}
 
