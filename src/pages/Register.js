@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import chefImg from "../images/newbg.png";
 import "../App.css";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import DangerImg from "../images/icons8-danger-96.png";
+import { Store } from "../Store";
 
 const Register = () => {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+
   const navigate = useNavigate();
   const [user, setUser] = useState({
     Username: "",
@@ -60,7 +64,7 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
+    if (userInfo) {
       navigate("/feed");
     }
   });

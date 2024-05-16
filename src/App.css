@@ -131,23 +131,23 @@ nav {
 }
 
 @media (min-width: 768px) {
-  .row-cols-md-3>* {
+  .row-cols-md-3 > * {
     flex: 0 0 auto;
     width: 30% !important;
   }
 }
 
-.followingList li{
+.followingList li {
   width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    align-content: center;
-    flex-wrap: nowrap;
-    gap: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-content: center;
+  flex-wrap: nowrap;
+  gap: 50px;
 }
 
-.comment-form button:hover{
+.comment-form button:hover {
   background-color: rgb(255, 64, 64) !important;
   transition: 0.4s ease-in-out all;
 }
@@ -170,7 +170,7 @@ nav {
 }
 
 .feedRow {
-  gap: 10px;
+  gap: 25px;
   justify-content: space-evenly;
 }
 
@@ -356,7 +356,7 @@ nav {
 
 .recipeActionBtns button.btn {
   padding: 10px 50px 10px 50px;
-  background-color: #FF0000 !important;
+  background-color: #ff0000 !important;
   font-weight: bold;
   font-size: 18px;
 }
@@ -406,8 +406,8 @@ nav {
   float: right;
   text-align: right;
   position: absolute;
-  right: 10px;
-  width: 20%;
+  right: 12px;
+  width: 24%;
   height: 7%;
   background-repeat: no-repeat;
   background-position: right;
@@ -435,7 +435,6 @@ nav {
   background: #8080804a;
   transition: 0.3s ease-in-out all;
 }
-
 
 .currentLogged img {
   /* height: 100%;
@@ -573,7 +572,7 @@ form.recipeDetailsForm {
 }
 
 .customBackground {
-  background-color: #ECECEC;
+  background-color: #ececec;
   height: 100%;
 }
 
@@ -632,7 +631,7 @@ form.recipeDetailsForm {
   margin-bottom: 0px;
   padding-bottom: 0px;
   font-size: 20px;
-  right: 14px;
+  right: 10px;
   position: relative;
   top: -1px;
 }
@@ -642,7 +641,7 @@ form.recipeDetailsForm {
 }
 
 .mainHeader::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 10%;
   margin: 0px auto;
@@ -655,8 +654,7 @@ form.recipeDetailsForm {
 }
 
 .customBg {
-  background-color: #ECECEC;
-  height: 100vh;
+  background-color: #ececec;
 }
 
 .errorMessage {
@@ -709,7 +707,7 @@ form.recipeDetailsForm {
 }
 
 .descriptionForRecipe::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0px;
   top: auto;
@@ -778,7 +776,7 @@ form.recipeDetailsForm {
 }
 
 .ingredients ul li::before {
-  content: '';
+  content: "";
   position: absolute;
   left: -25px;
   width: 20px;
@@ -847,7 +845,7 @@ form.recipeDetailsForm {
   gap: 10px;
 }
 
-.commentsSection>div {
+.commentsSection > div {
   padding-top: 10px;
   padding-bottom: 10px;
   border-top: 1px solid black;
@@ -899,17 +897,14 @@ div#root {
 
 @keyframes float {
   0% {
-
     transform: translatey(0px);
   }
 
   50% {
-
     transform: translatey(-20px);
   }
 
   100% {
-
     transform: translatey(0px);
   }
 }
@@ -1008,7 +1003,7 @@ div#root {
 }
 
 .shareBtn {
-  background: #E7FAFE;
+  background: #e7fafe;
   padding: 10px;
   border-radius: 50%;
   cursor: pointer;
@@ -1019,7 +1014,6 @@ div#root {
   background: #bbcccf;
   transition: 0.3s ease-in-out all;
 }
-
 
 .recipeBoxDetails {
   width: 100%;
@@ -1055,7 +1049,6 @@ div#root {
   gap: 20px;
 }
 
-
 .newRating {
   display: flex;
   align-items: center;
@@ -1070,7 +1063,6 @@ div#root {
   margin-right: 10px;
   margin-top: 5px;
 }
-
 
 .recipeNewImage img {
   border-radius: 20px;
@@ -1147,7 +1139,7 @@ div#root {
   flex-wrap: wrap;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 
 .recommendedBox {
@@ -1216,7 +1208,6 @@ div#root {
   gap: 20px;
 }
 
-
 .comment-form form {
   display: flex;
   align-items: flex-end;
@@ -1225,7 +1216,6 @@ div#root {
   gap: 20px;
   flex-wrap: wrap;
 }
-
 
 .comment-form form textarea {
   width: 100%;
@@ -1236,7 +1226,6 @@ div#root {
 }
 
 .comment-form form button {
-
   background: #d53856;
   border-radius: 15px;
   padding: 5px 20px 5px 20px;
@@ -1270,7 +1259,7 @@ div#root {
 }
 
 @media (max-width: 1224px) {
-  .image-slider{
+  .image-slider {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
@@ -1278,7 +1267,7 @@ div#root {
   }
 }
 
-@media (max-width: 1199px){
+@media (max-width: 1199px) {
   .mainSection {
     align-items: center;
     justify-content: space-between;
@@ -1288,15 +1277,15 @@ div#root {
     gap: 30px;
   }
 
-  .recipeNewImage{
+  .recipeNewImage {
     width: 100% !important;
   }
 
-  .recipeNewImage img{
+  .recipeNewImage img {
     max-width: 100%;
   }
 
-  .mainSection .nutrition{
+  .mainSection .nutrition {
     width: 100%;
   }
 }
@@ -1350,8 +1339,8 @@ div#root {
   height: 30px;
 }
 
-@media (max-width: 996px){
-  .detailsMins{
+@media (max-width: 996px) {
+  .detailsMins {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;

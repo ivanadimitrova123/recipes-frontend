@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import DangerImg from "../images/icons8-danger-96.png";
+import { Store } from "../Store";
 
 const Login = () => {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({
     Username: "",
@@ -25,9 +28,8 @@ const Login = () => {
       setLoading(true);
       const response = await axios.post("/api/account/login", loginInfo);
       if (response.status === 200) {
-        localStorage.setItem("jwtToken", response.data.token);
-        let userJSON = JSON.stringify(response.data.user);
-        localStorage.setItem("user", userJSON);
+        ctxDispatch({ type: "USER_SIGNIN", payload: response.data });
+        localStorage.setItem("userInfo", JSON.stringify(response.data));
         navigate(`/feed`);
       }
     } catch (error) {
@@ -46,7 +48,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
+    if (userInfo) {
       navigate("/feed");
     }
   });

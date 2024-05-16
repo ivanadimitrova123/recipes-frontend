@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
+import { Store } from "../Store";
 
 function RecipeForm() {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const { id } = useParams();
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null);
-  const [users, setUsers] = useState([]);
   const [recipe, setRecipe] = useState({
     name: "",
     description: "",
@@ -24,26 +25,17 @@ function RecipeForm() {
 
   useEffect(() => {
     if (id) {
-      const token = localStorage.getItem("jwtToken");
-      if (!token) {
-        console.error("JWT token not available.");
-        return;
-      }
       axios
         .get(`/api/recipes/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${userInfo.token}`,
           },
         })
         .then((response) => {
           const fetchedRecipe = response.data.recipe;
-          /*    setRecipe({
-            name: fetchedRecipe.name,
-            description: fetchedRecipe.description,
-            ingredients: fetchedRecipe.ingredients,
-          }); */
+
+          fetchedRecipe.ingredients = fetchedRecipe.ingredients.join("\n");
           setRecipe(fetchedRecipe);
-          //setPhoto(fetchedRecipe.picture);
           setPhoto(
             `data:${fetchedRecipe.picture.contentType};base64,${fetchedRecipe.picture.imageData}`
           );
@@ -52,16 +44,7 @@ function RecipeForm() {
           console.error("Error fetching recipe data:", error);
         });
     }
-  }, [id]);
-
-  const handleIngredientChange = (e) => {
-    const ingredientsArray = e.target.value
-      .split("\n")
-      .map((ingredient) => ingredient.trim());
-    console.log(ingredientsArray);
-    //const ingredientsArray = e.target.value.split('\n').filter((ingredient) => ingredient.trim() !== '');
-    setRecipe({ ...recipe, ingredients: ingredientsArray });
-  };
+  }, [userInfo, id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,6 +59,14 @@ function RecipeForm() {
   };
 
   const handleCreateOrUpdateRecipe = async (e) => {
+    if (
+      recipe.name === "" ||
+      recipe.description === "" ||
+      photo === null ||
+      recipe.ingredients === ""
+    ) {
+      alert("No empty fields allowed");
+    }
     e.preventDefault();
 
     const formData = new FormData();
@@ -85,16 +76,9 @@ function RecipeForm() {
     formData.append("level", recipe.level);
     formData.append("cook", recipe.cook);
     formData.append("prep", recipe.prep);
-    formData.append("total", recipe.total);
+    formData.append("total", parseInt(recipe.cook) + parseInt(recipe.prep));
     formData.append("yield", recipe.yield);
-    //formData.append('ingredients', recipe.ingredients.join('\n'));
-    /*  recipe.ingredients.forEach((ingredient) => {
-      formData.append("ingredients", ingredient);
-    }); */
-
     formData.append("photo", photo);
-
-    const token = localStorage.getItem("jwtToken");
 
     try {
       if (id) {
@@ -103,23 +87,27 @@ function RecipeForm() {
         const response = await axios.put(`/api/recipes/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${userInfo.token}`,
           },
         });
 
         console.log("Recipe updated:", response.data);
-        navigate("/userProfile");
+        if (userInfo.user.role === "Admin") {
+          navigate(`/admin/dashboard`);
+        } else {
+          navigate(`/userProfile/${userInfo.user.id}`);
+        }
       } else {
         //add action
         const response = await axios.post("/api/recipes", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${userInfo.token}`,
           },
         });
 
         console.log("Recipe created:", response.data);
-        navigate("/userProfile");
+        navigate(`/userProfile/${userInfo.user.id}`);
       }
     } catch (error) {
       console.error(error);
@@ -135,25 +123,18 @@ function RecipeForm() {
             className="recipePhotoCover"
             style={{
               height: "100%",
-              backgroundImage: `url(${(recipe.picture && recipe.picture.fileName) || ""
-                })`,
-              backgroundSize: "cover", // Optional: Adjust the background size as per your requirement
-              backgroundPosition: "center", // Optional: Adjust the background position as per your requirement
-              // You can add more CSS properties here as needed
+              backgroundImage: `url(${
+                (recipe.picture && recipe.picture.fileName) || ""
+              })`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           >
-            {/* <label htmlFor="photo">Photo:</label> */}
+            <label htmlFor="photo">Photo:</label>
             <input type="file" accept="image/*" onChange={handleFileChange} />
           </div>
-          {/* {currentUser && (
-                    <div>
-                        <img src={currentUser.userImage} alt="profile"/>
-                        <h4>{currentUser.username}</h4>
-                    </div>
-                )} */}
         </div>
         <div className="form-group">
-          {/* <label htmlFor="name">Title Recipe:</label> */}
           <input
             type="text"
             name="name"
@@ -219,7 +200,8 @@ function RecipeForm() {
                 <input
                   type="number"
                   name="total"
-                  value={recipe.total}
+                  disabled
+                  value={parseInt(recipe.cook) + parseInt(recipe.prep)}
                   onChange={handleInputChange}
                 ></input>
                 min

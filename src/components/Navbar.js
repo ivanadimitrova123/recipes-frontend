@@ -1,71 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChefsFeedImage from "../images/ChefsFeed.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Store } from "../Store";
 
 const Navbar = () => {
-  /*   const [recipes, setRecipes] = useState([]);
- 
-  const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const filteredUsers = users.filter(
-    (user) =>
-      //user.username.toLowerCase().includes(searchTerm.toLowerCase())
-      currentUser &&
-      user.id !== currentUser.id &&
-      user.username.toLowerCase().startsWith(searchTerm.toLowerCase())
-  ); */
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
   const navigate = useNavigate();
   const baseUrl = window.location.origin;
-  const [currentUser, setCurrentUser] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [foundUsers, setFoundUsers] = useState([]);
   const [foundRecipes, setFoundRecipes] = useState([]);
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      const token = localStorage.getItem("jwtToken");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      axios
-        .get("/api/account/current", { headers })
-        .then((response) => {
-          setCurrentUser(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching current user:", error);
-        });
-      /*
-      axios
-        .get("/api/follow/recipes", { headers })
-        .then((response) => {
-          setRecipes(response.data);
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching feed recipes:", error);
-        });
-
-      axios
-        .get("/api/account/allUsers", { headers })
-        .then((response) => {
-          setUsers(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching users:", error);
-        });*/
-    }
-  }, []);
 
   useEffect(() => {
     if (searchText.length > 0) {
-      const token = localStorage.getItem("jwtToken");
       const headers = {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userInfo.token}`,
       };
 
       axios
@@ -86,11 +39,11 @@ const Navbar = () => {
           console.error("Error fetching searched recipes:", error);
         });
     }
-  }, [searchText]);
+  }, [userInfo, searchText]);
 
   const signoutHandler = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("jwtToken");
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
     navigate("/login");
   };
 
@@ -100,7 +53,7 @@ const Navbar = () => {
         <Link className="navbar-brand" to="/">
           <img src={ChefsFeedImage} alt="Logo" height="30" />
         </Link>
-        {user && (
+        {userInfo && (
           <>
             <button
               className="navbar-toggler"
@@ -126,27 +79,54 @@ const Navbar = () => {
                   {searchText.length > 0 && (
                     <div className="dropdown-menu show searchItemsList">
                       {/* Render found users */}
+                      {foundUsers.length > 0 && "Users"}
                       {foundUsers.map((user) => (
-                        <a className="dropdown-item" href={`/userProfile/${user.id}`} key={user.id}>{user.username}</a>
-                       
+                        <a
+                          className="dropdown-item"
+                          href={`/userProfile/${user.id}`}
+                          key={user.id}
+                        >
+                          <div>
+                            <img
+                              src={
+                                user.picture !== ""
+                                  ? user.picture
+                                  : `${baseUrl}/default.jpg`
+                              }
+                              alt="profile-pic"
+                              style={{ width: "30px", height: "30px" }}
+                            />{" "}
+                            {user.username}
+                          </div>
+                        </a>
                       ))}
                       {/* Render found recipes */}
+                      {foundRecipes.length > 0 && "Recipes"}
                       {foundRecipes.map((recipe) => (
-                        <a className="dropdown-item" href={`/recipeDetails/${recipe.id}`} key={recipe.id}>{recipe.name}</a>
+                        <a
+                          className="dropdown-item"
+                          href={`/recipeDetails/${recipe.id}`}
+                          key={recipe.id}
+                        >
+                          <div>
+                            <img
+                              src={recipe.picture}
+                              alt="profile-pic"
+                              style={{ width: "30px", height: "30px" }}
+                            />{" "}
+                            {recipe.name}
+                          </div>
+                        </a>
                       ))}
                     </div>
                   )}
                 </div>
+
                 <li className="nav-item">
-                  <Link to="/recipeForm" className="nav-link">
-                    Recipe Form
+                  <Link to="/saved" className="nav-link">
+                    Saved Recipes
                   </Link>
                 </li>
-                {/* <li className="nav-item">
-                  <Link to="/recipeDetails/1" className="nav-link">
-                    Recipe Details
-                  </Link>
-                </li> */} 
                 <li className="nav-item">
                   <Link to="/followingList" className="nav-link">
                     Following List
@@ -164,8 +144,8 @@ const Navbar = () => {
                       title={
                         <img
                           src={
-                            currentUser && currentUser.profilePictureId != null
-                              ? `${currentUser.userImage}`
+                            userInfo && userInfo.user.picture !== ""
+                              ? `${userInfo.user.picture}`
                               : `${baseUrl}/default.jpg`
                           }
                           alt="profile"
@@ -174,11 +154,21 @@ const Navbar = () => {
                     >
                       <NavDropdown.Item
                         onClick={() => {
-                          navigate("/userProfile");
+                          navigate(`/userProfile/${userInfo.user.id}`);
                         }}
                       >
-                        Профил
+                        Profile
                       </NavDropdown.Item>
+                      {userInfo.user.role === "Admin" && (
+                        <NavDropdown.Item
+                          onClick={() => {
+                            navigate(`/admin/dashboard`);
+                          }}
+                        >
+                          Dashboard
+                        </NavDropdown.Item>
+                      )}
+
                       <NavDropdown.Divider />
                       <NavDropdown.Item onClick={signoutHandler}>
                         Logout

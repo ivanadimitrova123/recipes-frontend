@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import Navbar from "./Navbar";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { Store } from "../Store";
 
 function ImageUpload() {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
   const [selectedFile, setSelectedFile] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
@@ -19,9 +22,9 @@ function ImageUpload() {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    const token = localStorage.getItem('jwtToken');
+
     const headers = new Headers();
-    headers.append('Authorization', `Bearer ${token}`);
+    headers.append("Authorization", `Bearer ${userInfo.token}`);
 
     try {
       const response = await fetch("/api/image", {
@@ -31,8 +34,10 @@ function ImageUpload() {
       });
 
       if (response.ok) {
-        console.log("Image uploaded successfully!");
-        navigate('/userProfile');
+        const data = await response.json();
+        var u = userInfo.user;
+        u.picture = data.imageUrl;
+        ctxDispatch({ type: "UPDATE_PICTURE", payload: u });
       } else {
         const data = await response.json();
         alert(`Upload failed: ${data}`);
@@ -61,21 +66,39 @@ function ImageUpload() {
         <div className="changeImageBox">
           <h2>Image Upload</h2>
           <div className="form-group">
-            <input type="file" accept="image/*" className="form-control-file" onChange={handleFileChange} />
+            <input
+              type="file"
+              accept="image/*"
+              className="form-control-file"
+              onChange={handleFileChange}
+            />
           </div>
         </div>
         {selectedFile && (
           <div className="changedImage">
-            <img src={URL.createObjectURL(selectedFile)} alt="Selected" style={{ maxWidth: "100%", maxHeight: "300px" }} />
+            <img
+              src={URL.createObjectURL(selectedFile)}
+              alt="Selected"
+              style={{ maxWidth: "100%", maxHeight: "300px" }}
+            />
             <div>
               {showConfirmation ? (
                 <div className="changeImgButtons">
                   <p>Are you sure you want to upload this image?</p>
-                  <button onClick={handleConfirm} className="btn btn-primary">Save and Proceed</button>
-                  <button onClick={handleCancel} className="btn btn-secondary">Pick Another</button>
+                  <button onClick={handleConfirm} className="btn btn-primary">
+                    Save and Proceed
+                  </button>
+                  <button onClick={handleCancel} className="btn btn-secondary">
+                    Pick Another
+                  </button>
                 </div>
               ) : (
-                <button onClick={() => setShowConfirmation(true)} className="btn btn-primary mt-3">Upload</button>
+                <button
+                  onClick={() => setShowConfirmation(true)}
+                  className="btn btn-primary mt-3"
+                >
+                  Upload
+                </button>
               )}
             </div>
           </div>
