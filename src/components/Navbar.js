@@ -87,12 +87,14 @@ const Navbar = () => {
                       {/* Render found users */}
                       {foundUsers.length > 0 && "Users"}
                       {foundUsers.map((user) => (
-                        <a
+                        <span
                           className="dropdown-item"
-                          href={`/userProfile/${user.id}`}
+                          onClick={() => {
+                            navigate(`/userProfile/${user.id}`);
+                          }}
                           key={user.id}
                         >
-                          <div>
+                          <div style={{ overflow: "hidden" }}>
                             <img
                               src={
                                 user.picture !== ""
@@ -104,14 +106,17 @@ const Navbar = () => {
                             />{" "}
                             {user.username}
                           </div>
-                        </a>
+                        </span>
                       ))}
                       {/* Render found recipes */}
                       {foundRecipes.length > 0 && "Recipes"}
                       {foundRecipes.map((recipe) => (
-                        <a
+                        <span
                           className="dropdown-item"
-                          href={`/recipeDetails/${recipe.id}`}
+                          onClick={() =>
+                            navigate(`/recipeDetails/${recipe.id}`)
+                          }
+                          //href={`/recipeDetails/${recipe.id}`}
                           key={recipe.id}
                         >
                           <div>
@@ -122,7 +127,7 @@ const Navbar = () => {
                             />{" "}
                             {recipe.name}
                           </div>
-                        </a>
+                        </span>
                       ))}
                     </div>
                   )}

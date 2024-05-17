@@ -31,7 +31,7 @@ const SavedRecipes = () => {
     setIsLoading(false);
   }, [userInfo]);
   return (
-    <div className="container-fluid customBg">
+    <div className="container-fluid customBg" style={{ minHeight: "100vh" }}>
       <Navbar />
       <div className="row mb-3">
         <div className="col" style={{ display: "flex", alignItems: "center" }}>
