@@ -94,7 +94,9 @@ const Navbar = () => {
                           }}
                           key={user.id}
                         >
-                          <div style={{ overflow: "hidden" }}>
+                          <div
+                            style={{ overflow: "hidden", cursor: "pointer" }}
+                          >
                             <img
                               src={
                                 user.picture !== ""
@@ -119,7 +121,9 @@ const Navbar = () => {
                           //href={`/recipeDetails/${recipe.id}`}
                           key={recipe.id}
                         >
-                          <div>
+                          <div
+                            style={{ overflow: "hidden", cursor: "pointer" }}
+                          >
                             <img
                               src={recipe.picture}
                               alt="profile-pic"

@@ -9,6 +9,7 @@ function FollowingList() {
   const [followingUsers, setFollowingUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [unfollowLoading, setUnfollowLoading] = useState(false);
 
   useEffect(() => {
     const fetchFollowingUsers = async () => {
@@ -33,6 +34,7 @@ function FollowingList() {
   }, [userInfo, refresh]);
 
   const handleUnfollow = async (followedUserId) => {
+    setUnfollowLoading(true);
     const headers = {
       Authorization: `Bearer ${userInfo.token}`,
     };
@@ -43,8 +45,10 @@ function FollowingList() {
           headers,
         }
       );
+      setUnfollowLoading(false);
       setRefresh(true);
     } catch (error) {
+      setUnfollowLoading(false);
       console.error("Error unfollowing user:", error);
     }
   };

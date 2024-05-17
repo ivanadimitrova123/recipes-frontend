@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { Store } from "../Store";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -13,23 +14,31 @@ const Dashboard = () => {
   const [recipes, setRecipes] = useState([]);
   const [recipesIsLoading, setRecipesIsLoading] = useState(false);
   const [commentRefesh, setCommentRefesh] = useState(false);
+  const [commentAllowLoading, setCommentAllowLoading] = useState(false);
+  const [commentDeleteLoading, setCommentDeleteLoading] = useState(false);
+  const [recipeAllowLoading, setRecipeAllowLoading] = useState(false);
 
   const allowHandler = async (id) => {
     const headers = {
       Authorization: `Bearer ${userInfo.token}`,
     };
+    setCommentAllowLoading(true);
     axios
       .delete(`https://recipes-backend-id80.onrender.com/api/report/${id}`, {
         headers,
       })
-      .then(() => {})
+      .then(() => {
+        setCommentAllowLoading(false);
+      })
       .catch((error) => {
+        setCommentAllowLoading(false);
         console.error("Error fetching feed recipes:", error);
       });
     setCommentRefesh(true);
   };
 
   const deleteHandler = async (id) => {
+    setCommentDeleteLoading(true);
     const headers = {
       Authorization: `Bearer ${userInfo.token}`,
     };
@@ -38,8 +47,31 @@ const Dashboard = () => {
         `https://recipes-backend-id80.onrender.com/api/report/delete/${id}`,
         { headers }
       )
-      .then(() => {})
+      .then(() => {
+        setCommentDeleteLoading(false);
+      })
       .catch((error) => {
+        setCommentDeleteLoading(false);
+        console.error("Error fetching feed recipes:", error);
+      });
+    setCommentRefesh(true);
+  };
+
+  const allowRecipe = async (id) => {
+    setRecipeAllowLoading(true);
+    const headers = {
+      Authorization: `Bearer ${userInfo.token}`,
+    };
+    axios
+      .delete(
+        `https://recipes-backend-id80.onrender.com/api/reportedrecipe/${id}`,
+        { headers }
+      )
+      .then(() => {
+        setRecipeAllowLoading(false);
+      })
+      .catch((error) => {
+        setRecipeAllowLoading(false);
         console.error("Error fetching feed recipes:", error);
       });
     setCommentRefesh(true);
@@ -138,13 +170,21 @@ const Dashboard = () => {
                     className="me-2 btn btn-primary"
                     onClick={() => allowHandler(c.commentId)}
                   >
-                    Allow
+                    {commentAllowLoading ? (
+                      <Spinner style={{ width: "1rem", height: "1rem" }} />
+                    ) : (
+                      "Allow"
+                    )}
                   </button>
                   <button
                     className="me-2 btn btn-danger"
                     onClick={() => deleteHandler(c.commentId)}
                   >
-                    Delete
+                    {commentDeleteLoading ? (
+                      <Spinner style={{ width: "1rem", height: "1rem" }} />
+                    ) : (
+                      "Delete"
+                    )}
                   </button>
                 </div>
               </div>
@@ -182,6 +222,12 @@ const Dashboard = () => {
                   <b className="ms-2">{r.name}</b>
                 </div>
                 <div>
+                  <button
+                    className="me-2 btn btn-primary"
+                    onClick={() => allowRecipe(r.recipeID)}
+                  >
+                    Allow
+                  </button>
                   <button
                     className="me-2 btn btn-primary"
                     onClick={() => navigate(`/recipeDetails/${r.recipeId}`)}
