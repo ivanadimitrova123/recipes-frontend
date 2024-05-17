@@ -19,7 +19,9 @@ const Comment = ({ comment, deleteHandler }) => {
     formData.append("commentId", comment.commentId);
 
     axios
-      .post(`/api/report`, formData, { headers })
+      .post(`https://recipes-backend-id80.onrender.com/api/report`, formData, {
+        headers,
+      })
       .then((response) => {
         toast.success(response.data);
       })
