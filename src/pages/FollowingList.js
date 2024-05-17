@@ -16,7 +16,10 @@ function FollowingList() {
         Authorization: `Bearer ${userInfo.token}`,
       };
       try {
-        const response = await axios.get("/api/follow/following", { headers });
+        const response = await axios.get(
+          "https://recipes-backend-id80.onrender.com/api/follow/following",
+          { headers }
+        );
         setFollowingUsers(response.data);
         setLoading(false);
       } catch (error) {
@@ -34,9 +37,12 @@ function FollowingList() {
       Authorization: `Bearer ${userInfo.token}`,
     };
     try {
-      const response = await axios.delete(`/api/follow/${followedUserId}`, {
-        headers,
-      });
+      const response = await axios.delete(
+        `https://recipes-backend-id80.onrender.com/api/follow/${followedUserId}`,
+        {
+          headers,
+        }
+      );
       setRefresh(true);
     } catch (error) {
       console.error("Error unfollowing user:", error);

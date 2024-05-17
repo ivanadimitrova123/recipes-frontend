@@ -32,7 +32,10 @@ const Register = () => {
     e.preventDefault();
     try {
       setloading(true);
-      const response = await axios.post("/api/account/register", user);
+      const response = await axios.post(
+        "https://recipes-backend-id80.onrender.com/api/account/register",
+        user
+      );
       setloading(false);
       navigate(`/login`);
       console.log(response);

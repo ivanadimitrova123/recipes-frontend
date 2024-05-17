@@ -17,7 +17,10 @@ const SavedRecipes = () => {
     };
 
     axios
-      .get(`api/saverecipe?userId=${userInfo.user.id}`, { headers })
+      .get(
+        `https://recipes-backend-id80.onrender.com/api/saverecipe?userId=${userInfo.user.id}`,
+        { headers }
+      )
       .then((response) => {
         setRecipes(response.data);
       })

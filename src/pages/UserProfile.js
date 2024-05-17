@@ -23,9 +23,12 @@ function UserProfile() {
 
     const checkFollowStatus = async () => {
       try {
-        const response = await axios.get(`/api/follow/status/${id}`, {
-          headers,
-        });
+        const response = await axios.get(
+          `https://recipes-backend-id80.onrender.com/api/follow/status/${id}`,
+          {
+            headers,
+          }
+        );
         setIsFollowing(response.data);
       } catch (error) {
         console.error("Network error:", error);
@@ -33,7 +36,10 @@ function UserProfile() {
     };
 
     if (id) {
-      fetch(`/api/account/user/${id}`, { headers })
+      fetch(
+        `https://recipes-backend-id80.onrender.com/api/account/user/${id}`,
+        { headers }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -63,10 +69,13 @@ function UserProfile() {
     };
 
     try {
-      const response = await fetch(`/api/follow/${user.id}`, {
-        method: "POST",
-        headers: headers,
-      });
+      const response = await fetch(
+        `https://recipes-backend-id80.onrender.com/api/follow/${user.id}`,
+        {
+          method: "POST",
+          headers: headers,
+        }
+      );
 
       if (response.ok) {
         setIsFollowing(true);
@@ -86,7 +95,10 @@ function UserProfile() {
       Authorization: `Bearer ${userInfo.token}`,
     };
     try {
-      await axios.delete(`/api/follow/${user.id}`, { headers });
+      await axios.delete(
+        `https://recipes-backend-id80.onrender.com/api/follow/${user.id}`,
+        { headers }
+      );
       setIsFollowing(false);
       setFollowLoading(false);
     } catch (error) {

@@ -39,7 +39,9 @@ const RecipeDetails = () => {
     };
 
     axios
-      .get(`/api/recipes/${id}`, { headers })
+      .get(`https://recipes-backend-id80.onrender.com/api/recipes/${id}`, {
+        headers,
+      })
       .then((response) => {
         setRecipe(response.data.recipe);
         setRecipeUserImage(response.data.recipeUserImage);
@@ -63,7 +65,9 @@ const RecipeDetails = () => {
     };
 
     axios
-      .get(`/api/recipes/popular`, { headers })
+      .get(`https://recipes-backend-id80.onrender.com/api/recipes/popular`, {
+        headers,
+      })
       .then((response) => {
         setPopularRecipes(response.data);
       })
@@ -88,7 +92,7 @@ const RecipeDetails = () => {
 
       axios
         .get(
-          `/api/usergrades?userId=${userInfo.user.id}&recipeId=${recipe.id}`,
+          `https://recipes-backend-id80.onrender.com/api/usergrades?userId=${userInfo.user.id}&recipeId=${recipe.id}`,
           {
             headers,
           }
@@ -109,7 +113,10 @@ const RecipeDetails = () => {
     };
     if (recipe && recipe.id != null) {
       axios
-        .get(`/api/comments/${recipe.id}`, { headers })
+        .get(
+          `https://recipes-backend-id80.onrender.com/api/comments/${recipe.id}`,
+          { headers }
+        )
         .then((response) => setComments(response.data))
         .catch((error) => {
           console.error("Error fetching current user:", error);
@@ -128,7 +135,9 @@ const RecipeDetails = () => {
     };
 
     axios
-      .delete(`/api/recipes/${id}`, { headers })
+      .delete(`https://recipes-backend-id80.onrender.com/api/recipes/${id}`, {
+        headers,
+      })
       .then(() => {
         if (userInfo.user.role === "Admin") {
           navigate(`/admin/dashboard`);
@@ -153,7 +162,11 @@ const RecipeDetails = () => {
     formData.append("grade", grade);
 
     axios
-      .post(`/api/usergrades`, formData, { headers })
+      .post(
+        `https://recipes-backend-id80.onrender.com/api/usergrades`,
+        formData,
+        { headers }
+      )
       .then(() => {
         setRecipeGrade(grade);
       })
@@ -173,7 +186,11 @@ const RecipeDetails = () => {
     formData.append("recipeId", recipe.id);
 
     axios
-      .post(`/api/saverecipe`, formData, { headers })
+      .post(
+        `https://recipes-backend-id80.onrender.com/api/saverecipe`,
+        formData,
+        { headers }
+      )
       .then(() => {
         toast.success("Recipe saved");
       })
@@ -195,7 +212,11 @@ const RecipeDetails = () => {
     formData.append("Content", commentText);
 
     axios
-      .post(`/api/comments`, formData, { headers })
+      .post(
+        `https://recipes-backend-id80.onrender.com/api/comments`,
+        formData,
+        { headers }
+      )
       .then(() => {
         setRerender(true);
         setCommentText("");
@@ -212,7 +233,9 @@ const RecipeDetails = () => {
     };
 
     axios
-      .delete(`/api/comments/${id}`, { headers })
+      .delete(`https://recipes-backend-id80.onrender.com/api/comments/${id}`, {
+        headers,
+      })
       .then(() => {
         setRerender(true);
       })
@@ -232,7 +255,11 @@ const RecipeDetails = () => {
     formData.append("recipeId", recipe.id);
 
     axios
-      .post(`/api/reportedrecipe`, formData, { headers })
+      .post(
+        `https://recipes-backend-id80.onrender.com/api/reportedrecipe`,
+        formData,
+        { headers }
+      )
       .then((response) => {
         toast.success(response.data);
       })

@@ -22,7 +22,10 @@ const Navbar = () => {
       };
 
       axios
-        .get(`/api/account/search?text=${searchText}`, { headers })
+        .get(
+          `https://recipes-backend-id80.onrender.com/api/account/search?text=${searchText}`,
+          { headers }
+        )
         .then((response) => {
           setFoundUsers(response.data);
         })
@@ -31,7 +34,10 @@ const Navbar = () => {
         });
 
       axios
-        .get(`/api/recipes/search?text=${searchText}`, { headers })
+        .get(
+          `https://recipes-backend-id80.onrender.com/api/recipes/search?text=${searchText}`,
+          { headers }
+        )
         .then((response) => {
           setFoundRecipes(response.data);
         })

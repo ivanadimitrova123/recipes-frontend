@@ -19,7 +19,9 @@ const Dashboard = () => {
       Authorization: `Bearer ${userInfo.token}`,
     };
     axios
-      .delete(`/api/report/${id}`, { headers })
+      .delete(`https://recipes-backend-id80.onrender.com/api/report/${id}`, {
+        headers,
+      })
       .then(() => {})
       .catch((error) => {
         console.error("Error fetching feed recipes:", error);
@@ -32,7 +34,10 @@ const Dashboard = () => {
       Authorization: `Bearer ${userInfo.token}`,
     };
     axios
-      .delete(`/api/report/delete/${id}`, { headers })
+      .delete(
+        `https://recipes-backend-id80.onrender.com/api/report/delete/${id}`,
+        { headers }
+      )
       .then(() => {})
       .catch((error) => {
         console.error("Error fetching feed recipes:", error);
@@ -47,7 +52,7 @@ const Dashboard = () => {
     };
 
     axios
-      .get("/api/report", { headers })
+      .get("https://recipes-backend-id80.onrender.com/api/report", { headers })
       .then((response) => {
         setComments(response.data);
       })
@@ -66,7 +71,9 @@ const Dashboard = () => {
     };
 
     axios
-      .get("/api/reportedrecipe", { headers })
+      .get("https://recipes-backend-id80.onrender.com/api/reportedrecipe", {
+        headers,
+      })
       .then((response) => {
         setRecipes(response.data);
       })

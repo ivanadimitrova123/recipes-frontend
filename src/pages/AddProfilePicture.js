@@ -27,11 +27,14 @@ function ImageUpload() {
     headers.append("Authorization", `Bearer ${userInfo.token}`);
 
     try {
-      const response = await fetch("/api/image", {
-        method: "POST",
-        body: formData,
-        headers,
-      });
+      const response = await fetch(
+        "https://recipes-backend-id80.onrender.com/api/image",
+        {
+          method: "POST",
+          body: formData,
+          headers,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

@@ -26,7 +26,7 @@ function RecipeForm() {
   useEffect(() => {
     if (id) {
       axios
-        .get(`/api/recipes/${id}`, {
+        .get(`https://recipes-backend-id80.onrender.com/api/recipes/${id}`, {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
           },
@@ -84,12 +84,16 @@ function RecipeForm() {
       if (id) {
         //edit action
 
-        const response = await axios.put(`/api/recipes/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        });
+        const response = await axios.put(
+          `https://recipes-backend-id80.onrender.com/api/recipes/${id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
 
         console.log("Recipe updated:", response.data);
         if (userInfo.user.role === "Admin") {
@@ -99,12 +103,16 @@ function RecipeForm() {
         }
       } else {
         //add action
-        const response = await axios.post("/api/recipes", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        });
+        const response = await axios.post(
+          "https://recipes-backend-id80.onrender.com/api/recipes",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
 
         console.log("Recipe created:", response.data);
         navigate(`/userProfile/${userInfo.user.id}`);
