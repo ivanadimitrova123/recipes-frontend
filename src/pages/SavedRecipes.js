@@ -58,7 +58,7 @@ const SavedRecipes = () => {
           ))}
         </div>
       ) : (
-        <p className="errorMessage">No recipes from followed users.</p>
+        <p className="errorMessage">No recipes saved.</p>
       )}
     </div>
   );

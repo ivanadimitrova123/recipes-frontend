@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Store } from "../Store";
+import { Spinner } from "react-bootstrap";
 
 function RecipeForm() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [recipe, setRecipe] = useState({
     name: "",
     description: "",
@@ -68,6 +70,7 @@ function RecipeForm() {
       alert("No empty fields allowed");
     }
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append("name", recipe.name);
@@ -82,8 +85,6 @@ function RecipeForm() {
 
     try {
       if (id) {
-        //edit action
-
         const response = await axios.put(
           `https://recipes-backend-id80.onrender.com/api/recipes/${id}`,
           formData,
@@ -95,14 +96,13 @@ function RecipeForm() {
           }
         );
 
-        console.log("Recipe updated:", response.data);
+        setIsLoading(false);
         if (userInfo.user.role === "Admin") {
           navigate(`/admin/dashboard`);
         } else {
           navigate(`/userProfile/${userInfo.user.id}`);
         }
       } else {
-        //add action
         const response = await axios.post(
           "https://recipes-backend-id80.onrender.com/api/recipes",
           formData,
@@ -113,12 +113,12 @@ function RecipeForm() {
             },
           }
         );
-
-        console.log("Recipe created:", response.data);
+        setIsLoading(false);
         navigate(`/userProfile/${userInfo.user.id}`);
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -219,7 +219,7 @@ function RecipeForm() {
               <div className="form-group selectorGroup">
                 <label>Yield: </label>
                 <input
-                  type="text"
+                  type="number"
                   name="yield"
                   value={recipe.yield}
                   onChange={handleInputChange}
@@ -243,7 +243,6 @@ function RecipeForm() {
                 name="ingredients"
                 className="form-control"
                 value={recipe.ingredients}
-                //onChange={handleIngredientChange}
                 onChange={handleInputChange}
               />
             </div>
@@ -253,7 +252,14 @@ function RecipeForm() {
             className="btn btn-danger mt-5"
             onClick={handleCreateOrUpdateRecipe}
           >
-            {id ? "Update Recipe" : "Create Recipe"}
+            {isLoading ? (
+              <Spinner style={{ height: "1rem", width: "1rem" }} />
+            ) : id ? (
+              "Update Recipe"
+            ) : (
+              "Create Recipe"
+            )}
+            {/* {id ? "Update Recipe" : "Create Recipe"} */}
           </button>
         </form>
       </div>
