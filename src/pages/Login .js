@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+//import axios from "axios";
+import axios from "../api/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import DangerImg from "../images/icons8-danger-96.png";

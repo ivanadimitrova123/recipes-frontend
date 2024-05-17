@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+//import axios from "axios";
+import axios from "../api/axiosInstance";
 import ChefsFeedImage from "../images/ChefsFeed.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
