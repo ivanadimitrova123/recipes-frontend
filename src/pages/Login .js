@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-//import axios from "axios";
-import axios from "../api/axiosInstance";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import DangerImg from "../images/icons8-danger-96.png";
@@ -27,7 +26,10 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post("/api/account/login", loginInfo);
+      const response = await axios.post(
+        "https://recipes-backend-id80.onrender.com/api/account/login",
+        loginInfo
+      );
       if (response.status === 200) {
         ctxDispatch({ type: "USER_SIGNIN", payload: response.data });
         localStorage.setItem("userInfo", JSON.stringify(response.data));

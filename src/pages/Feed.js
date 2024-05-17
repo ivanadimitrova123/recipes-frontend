@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-//import axios from "axios";
-import axios from "../api/axiosInstance";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Store } from "../Store";
@@ -19,7 +18,9 @@ const Feed = () => {
     };
 
     axios
-      .get("/api/follow/recipes", { headers })
+      .get("https://recipes-backend-id80.onrender.com/api/follow/recipes", {
+        headers,
+      })
       .then((response) => {
         setRecipes(response.data);
       })
