@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { render } from "@testing-library/react";
 import Favorites from "../images/favorites.svg";
 import timer from "../images/Timer.png";
@@ -32,6 +32,12 @@ const RecipeDetails = () => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [popularRecipes, setPopularRecipes] = useState("");
+  const [reportIsLoading, setReportIsLoading] = useState(false);
+  const [saveIsLoading, setSaveIsLoading] = useState(false);
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+  const [gradeIsLoading, setGradeIsLoading] = useState(false);
+  const [addCommentLoading, setAddCommentLoading] = useState(false);
+  const [deleteCommentLoading, setDeleteCommentLoading] = useState(false);
 
   useEffect(() => {
     const headers = {
@@ -134,11 +140,14 @@ const RecipeDetails = () => {
       Authorization: `Bearer ${userInfo.token}`,
     };
 
+    setDeleteIsLoading(true);
+
     axios
       .delete(`https://recipes-backend-id80.onrender.com/api/recipes/${id}`, {
         headers,
       })
       .then(() => {
+        setDeleteIsLoading(false);
         if (userInfo.user.role === "Admin") {
           navigate(`/admin/dashboard`);
         } else {
@@ -147,6 +156,7 @@ const RecipeDetails = () => {
       })
       .catch((error) => {
         console.error("Error deleting recipe:", error);
+        setDeleteIsLoading(false);
       });
   };
 
@@ -155,6 +165,8 @@ const RecipeDetails = () => {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${userInfo.token}`,
     };
+
+    setGradeIsLoading(true);
 
     const formData = new FormData();
     formData.append("userId", userInfo.user.id);
@@ -169,9 +181,11 @@ const RecipeDetails = () => {
       )
       .then(() => {
         setRecipeGrade(grade);
+        setGradeIsLoading(false);
       })
       .catch((error) => {
         console.error("Error Grading recipe:", error);
+        setGradeIsLoading(false);
       });
   };
 
@@ -180,6 +194,8 @@ const RecipeDetails = () => {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${userInfo.token}`,
     };
+
+    setSaveIsLoading(true);
 
     const formData = new FormData();
     formData.append("userId", userInfo.user.id);
@@ -192,15 +208,18 @@ const RecipeDetails = () => {
         { headers }
       )
       .then(() => {
+        setSaveIsLoading(false);
         toast.success("Recipe saved");
       })
       .catch((error) => {
         console.error("Error Grading recipe:", error);
+        setSaveIsLoading(false);
       });
   };
 
   const addCommentHandler = (e) => {
     e.preventDefault();
+    setAddCommentLoading(true);
     const headers = {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${userInfo.token}`,
@@ -218,15 +237,19 @@ const RecipeDetails = () => {
         { headers }
       )
       .then(() => {
+        setAddCommentLoading(false);
         setRerender(true);
         setCommentText("");
       })
       .catch((error) => {
+        setAddCommentLoading(false);
         console.error("Error Grading recipe:", error);
       });
   };
 
   const deleteCommentHandler = async (id) => {
+    setDeleteCommentLoading(true);
+
     const headers = {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${userInfo.token}`,
@@ -237,14 +260,17 @@ const RecipeDetails = () => {
         headers,
       })
       .then(() => {
+        setDeleteCommentLoading(false);
         setRerender(true);
       })
       .catch((error) => {
+        setDeleteCommentLoading(false);
         console.error("Error Grading recipe:", error);
       });
   };
 
   const reportRecipe = async () => {
+    setReportIsLoading(true);
     const headers = {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${userInfo.user.id}`,
@@ -262,8 +288,10 @@ const RecipeDetails = () => {
       )
       .then((response) => {
         toast.success(response.data);
+        setReportIsLoading(false);
       })
       .catch((error) => {
+        setReportIsLoading(false);
         console.error("Error deleting recipe:", error);
       });
   };
@@ -355,7 +383,12 @@ const RecipeDetails = () => {
                 <div className="actionShareBtn">
                   <Button className="button-fav" onClick={saveRecipe}>
                     {" "}
-                    <img src={Favorites} alt="bookmark" /> Save recipe
+                    <img src={Favorites} alt="bookmark" />{" "}
+                    {saveIsLoading ? (
+                      <Spinner style={{ width: "1rem", height: "1rem" }} />
+                    ) : (
+                      "Save recipe"
+                    )}
                   </Button>
                   <Button className="button-fav" onClick={reportRecipe}>
                     {" "}
@@ -364,7 +397,11 @@ const RecipeDetails = () => {
                       alt="bookmark"
                       style={{ height: "1.5rem" }}
                     />{" "}
-                    Report recipe
+                    {reportIsLoading ? (
+                      <Spinner style={{ width: "1rem", height: "1rem" }} />
+                    ) : (
+                      "Report recipe"
+                    )}
                   </Button>
                 </div>
               </div>
@@ -444,7 +481,11 @@ const RecipeDetails = () => {
                   Edit
                 </button>
                 <button className="btn-delete" onClick={handleDelete}>
-                  Delete
+                  {deleteIsLoading ? (
+                    <Spinner style={{ width: "1rem", height: "1rem" }} />
+                  ) : (
+                    "Delete"
+                  )}
                 </button>
               </div>
             )}
@@ -472,7 +513,11 @@ const RecipeDetails = () => {
                       onChange={(e) => setCommentText(e.target.value)}
                     />
                     <Button type="submit" className="post-review-btn">
-                      Post review
+                      {addCommentLoading ? (
+                        <Spinner style={{ width: "1rem", height: "1rem" }} />
+                      ) : (
+                        "Post review"
+                      )}
                     </Button>
                   </form>
                 </div>

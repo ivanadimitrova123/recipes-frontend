@@ -11,7 +11,12 @@ const PopularRecipes = ({ recipes }) => {
           recipes.map((recipe) => (
             <li
               key={recipe.id}
-              style={{ padding: "10px" }}
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "start",
+                padding: "10px",
+              }}
               onClick={() => navigate(`/recipeDetails/${recipe.id}`)}
             >
               <img

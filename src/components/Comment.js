@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import flag from "../images/flag-black-shape-svgrepo-com.svg";
 import { Store } from "../Store";
 import axios from "axios";
@@ -7,12 +7,15 @@ import { toast } from "react-toastify";
 const Comment = ({ comment, deleteHandler }) => {
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const [reportIsLoading, setReportIsLoading] = useState(false);
 
   const reportHandler = async () => {
     const headers = {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${userInfo.user.id}`,
     };
+
+    setReportIsLoading(true);
 
     const formData = new FormData();
     formData.append("userId", userInfo.user.id);
@@ -23,9 +26,11 @@ const Comment = ({ comment, deleteHandler }) => {
         headers,
       })
       .then((response) => {
+        setReportIsLoading(false);
         toast.success(response.data);
       })
       .catch((error) => {
+        setReportIsLoading(false);
         console.error("Error deleting recipe:", error);
       });
   };
