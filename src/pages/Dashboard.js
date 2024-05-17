@@ -224,7 +224,7 @@ const Dashboard = () => {
                 <div>
                   <button
                     className="me-2 btn btn-primary"
-                    onClick={() => allowRecipe(r.recipeID)}
+                    onClick={() => allowRecipe(r.recipeId)}
                   >
                     Allow
                   </button>
