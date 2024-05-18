@@ -15,6 +15,8 @@ const FeedItem = ({ user, recipe }) => {
         <img
           src={
             user.userImage === null ||
+            user.userImage ===
+              "http://recipes-backend-id80.onrender.com/api/image/" ||
             user.userImage === undefined ||
             user.userImage === ""
               ? `${baseUrl}/default.jpg`
