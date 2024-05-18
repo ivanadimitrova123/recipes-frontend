@@ -14,7 +14,9 @@ const FeedItem = ({ user, recipe }) => {
       <div className="previewRecipe">
         <img
           src={
-            user.userImage === null || user.userImage === undefined
+            user.userImage === null ||
+            user.userImage === undefined ||
+            user.userImage === ""
               ? `${baseUrl}/default.jpg`
               : user.userImage
           }
