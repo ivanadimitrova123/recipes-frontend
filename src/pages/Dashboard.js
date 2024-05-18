@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [commentAllowLoading, setCommentAllowLoading] = useState(false);
   const [commentDeleteLoading, setCommentDeleteLoading] = useState(false);
   const [recipeAllowLoading, setRecipeAllowLoading] = useState(false);
+  const [recipeRefresh, setRecipeRefresh] = useState(false);
 
   const allowHandler = async (id) => {
     const headers = {
@@ -74,7 +75,7 @@ const Dashboard = () => {
         setRecipeAllowLoading(false);
         console.error("Error fetching feed recipes:", error);
       });
-    setCommentRefesh(true);
+    setRecipeRefresh(true);
   };
 
   useEffect(() => {
@@ -89,7 +90,7 @@ const Dashboard = () => {
         setComments(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching feed recipes:", error);
+        console.error("Error fetching reported comments:", error);
       });
 
     if (commentRefesh) setCommentRefesh(false);
@@ -110,11 +111,11 @@ const Dashboard = () => {
         setRecipes(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching feed recipes:", error);
+        console.error("Error fetching reported recipes:", error);
       });
-
+    if (recipeRefresh) setRecipeRefresh(false);
     setRecipesIsLoading(false);
-  }, [userInfo]);
+  }, [userInfo, recipeRefresh]);
 
   return (
     <div className="container-fluid customBg" style={{ minHeight: "100vh" }}>
@@ -226,7 +227,11 @@ const Dashboard = () => {
                     className="me-2 btn btn-primary"
                     onClick={() => allowRecipe(r.recipeId)}
                   >
-                    Allow
+                    {recipeAllowLoading ? (
+                      <Spinner style={{ width: "1rem", height: "1rem" }} />
+                    ) : (
+                      "Allow"
+                    )}
                   </button>
                   <button
                     className="me-2 btn btn-primary"
