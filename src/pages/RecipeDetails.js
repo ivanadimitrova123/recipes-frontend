@@ -38,6 +38,7 @@ const RecipeDetails = () => {
   const [gradeIsLoading, setGradeIsLoading] = useState(false);
   const [addCommentLoading, setAddCommentLoading] = useState(false);
   const [deleteCommentLoading, setDeleteCommentLoading] = useState(false);
+  const baseUrl = window.location.origin;
 
   useEffect(() => {
     const headers = {
@@ -308,7 +309,15 @@ const RecipeDetails = () => {
                 <div className="detailsMins">
                   <div className="createdBy">
                     <img
-                      src={recipeUserImage}
+                      src={
+                        recipeUserImage === null ||
+                        recipeUserImage === undefined ||
+                        recipeUserImage === "" ||
+                        recipeUserImage ===
+                          "http://recipes-backend-id80.onrender.com/api/image/"
+                          ? `${baseUrl}/default.jpg`
+                          : recipeUserImage
+                      }
                       alt={recipe.user.username}
                       className="recipe-user-image"
                     />

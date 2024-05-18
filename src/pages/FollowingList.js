@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { Store } from "../Store";
 
 function FollowingList() {
+  const baseUrl = window.location.origin;
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [followingUsers, setFollowingUsers] = useState([]);
@@ -71,7 +72,15 @@ function FollowingList() {
           {followingUsers.map((user) => (
             <li key={user.id} className="mt-3">
               <img
-                src={user.picture}
+                src={
+                  user.picture === null ||
+                  user.picture === undefined ||
+                  user.picture === "" ||
+                  user.picture ===
+                    "http://recipes-backend-id80.onrender.com/api/image/"
+                    ? `${baseUrl}/default.jpg`
+                    : user.picture
+                }
                 alt={user.username}
                 style={{ width: "50px", height: "50px" }}
               />
