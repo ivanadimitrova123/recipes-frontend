@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const FeedItem = ({ user, recipe }) => {
+  const baseUrl = window.location.origin;
   const navigate = useNavigate();
   return (
     <div
@@ -12,7 +13,9 @@ const FeedItem = ({ user, recipe }) => {
     >
       <div className="previewRecipe">
         <img
-          src={user.userImage}
+          src={
+            user.userImage !== "" ? user.userImage : `${baseUrl}/default.jpg`
+          }
           alt="Profile"
           className="img-fluid rounded-circle"
         />
